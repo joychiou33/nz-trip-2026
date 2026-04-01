@@ -193,11 +193,38 @@ body {
 .alert-danger { background: var(--danger-light); color: var(--danger); border-left: 3px solid var(--danger); }
 .alert-kiwi { background: var(--kiwi-light); color: var(--kiwi-dark); border-left: 3px solid var(--kiwi); }
 
+
+/* 採買指南表格圖片樣式 */
+.shop-table img {
+  width: 60px; /* 固定預覽寬度 */
+  height: 60px;
+  object-fit: cover; /* 確保圖片不變形 */
+  border-radius: 6px;
+  cursor: zoom-in;
+  transition: transform 0.3s ease; /* 平滑放大動畫 */
+}
+
+/* 滑過或點擊時放大特效 */
+.shop-table img:hover, .shop-table img:active {
+  transform: scale(2.5); /* 放大 2.5 倍 */
+  position: relative;
+  z-index: 100; /* 確保在最上層 */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* 針對手機端的優化 */
 @media (max-width: 480px) {
   .hero h1 { font-size: 18px; }
   .outfit-table, .region-table, .buy-table { font-size: 12px; }
   .ap { font-size: 18px; }
 }
+@media (max-width: 600px) {
+  .shop-table th:nth-child(1), .shop-table td:nth-child(1) { width: 70px; } /* 調整圖片欄寬度 */
+  .shop-table img { width: 50px; height: 50px; }
+  .shop-table img:active { transform: scale(3); } /* 手機按住時放大更多 */
+}
+  
+
 </style>
 </head>
 <body>
@@ -617,21 +644,81 @@ body {
     </div>
   </div>
 
-  <div class="sec">超市 vs 藥妝：分類採買指南</div>
-  <div class="card" style="padding:0;overflow:hidden">
-    <table class="buy-table">
-      <tr><th>商品</th><th>推薦去哪買</th><th>理由</th></tr>
-      <tr><td>Whittaker's 巧克力</td><td>🟡 PAK'nSave（最便宜）</td><td>特價NZD$4，超市齊全</td></tr>
-      <tr><td>Cookie Time 餅乾</td><td>🟢 各大超市 / 工廠店</td><td>工廠店有破損特價品</td></tr>
-      <tr><td>Red Seal 茶包</td><td>🟡🔴🟢 三家超市均有</td><td>超市最便宜，約NZD$4</td></tr>
-      <tr><td>Manuka Honey Drops 喉糖</td><td>💊 Chemist Warehouse</td><td>保健品區選擇更多</td></tr>
-      <tr><td>Alpine Silk 綿羊油（媽媽）</td><td>🟢 Woolworths / New World</td><td>超市有賣，平價品牌</td></tr>
-      <tr><td>Barker's 果醬</td><td>🛍 蒂卡波特產店（D8）</td><td>產地購買更有紀念性</td></tr>
-      <tr><td>Bruntwood Lane 羊毛香皂</td><td>🛍 特產店/紀念品店</td><td>D8蒂卡波特產店</td></tr>
-      <tr><td>Trilogy 玫瑰果油</td><td>💊 Life Pharmacy / CW</td><td>藥妝品項齊全</td></tr>
-      <tr><td>Icebreaker 保暖衣（自用）</td><td>🎽 皇后鎮店 / 機場免稅</td><td>D6逛市區，D11機場省13%</td></tr>
-      <tr><td>Kathmandu 美利諾</td><td>🎽 基督城CBD店</td><td>D9自由日步行5分可達</td></tr>
+  <div class="sec">🛒 超市 vs 藥妝：分類採買指南</div>
+  <div class="card">
+    <table class="shop-table" style="width:100%; border-collapse: collapse; font-size:13px;">
+      <thead>
+        <tr style="background:#f8f9fa; text-align:left;">
+          <th style="padding:10px; border-bottom:2px solid var(--border);">圖片</th>
+          <th style="padding:10px; border-bottom:2px solid var(--border);">品項</th>
+          <th style="padding:10px; border-bottom:2px solid var(--border);">推薦地點 (含購買決策)</th>
+          <th style="padding:10px; border-bottom:2px solid var(--border);">價位 (NZD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><img src="img/shop/whittakers_choc.jpg" alt="Whittaker's"></td>
+          <td><strong>Whittaker's 巧克力</strong></td>
+          <td style="color:var(--kiwi);">PAK'nSave (黃超) 最便宜，口味最齊。</td>
+          <td>$4.00 - $6.50</td>
+        </tr>
+        <tr>
+          <td><img src="img/shop/cookietime_biscuits.jpg" alt="Cookie Time"></td>
+          <td><strong>Cookie Time 餅乾</strong></td>
+          <td style="color:var(--kiwi);">各大超市 / 工廠店。工廠店有破損特價包。</td>
+          <td>$1.00 - $5.00</td>
+        </tr>
+        <tr>
+          <td><img src="img/shop/red_seal_tea.jpg" alt="Red Seal"></td>
+          <td><strong>Red Seal 茶包</strong></td>
+          <td style="color:var(--kiwi);">三家超市均有。推薦冷泡系列，看到約 $4 即可買。</td>
+          <td>$3.50 - $5.00</td>
+        </tr>
+        <tr>
+          <td><img src="img/shop/manuka_drops.jpg" alt="Manuka Drops"></td>
+          <td><strong>Manuka Honey 喉糖</strong></td>
+          <td style="color:var(--sky);">Chemist Warehouse。藥妝保健區選擇多且划算。</td>
+          <td>$10.00 - $18.00</td>
+        </tr>
+        <tr>
+          <td><img src="img/shop/alpine_silk_cream.jpg" alt="Alpine Silk"></td>
+          <td><strong>Alpine Silk 綿羊油</strong></td>
+          <td style="color:var(--kiwi);">Woolworths / New World。超市平價品牌，媽媽族最愛。</td>
+          <td>$5.00 - $12.00</td>
+        </tr>
+        <tr>
+          <td><img src="img/shop/barkers_jam.jpg" alt="Barker's"></td>
+          <td><strong>Barker's 果醬</strong></td>
+          <td style="color:var(--amber);">蒂卡波特產店 (D8)。產地限定口味，具紀念性。</td>
+          <td>$6.00 - $9.00</td>
+        </tr>
+        <tr>
+          <td><img src="img/shop/wool_soap.jpg" alt="Wool Soap"></td>
+          <td><strong>羊毛香皂</strong></td>
+          <td style="color:var(--amber);">D8 蒂卡波特產店。在地特色，適合送禮。</td>
+          <td>$3.00 - $6.00</td>
+        </tr>
+        <tr>
+          <td><img src="img/shop/villa_maria_wine.jpg" alt="Villa Maria"></td>
+          <td><strong>Villa Maria 白葡萄酒</strong></td>
+          <td style="color:var(--kiwi);">PAK'nSave (D9)。$12-15 即可入手。<b>(包毛巾託運)</b></td>
+          <td>$12.00 - $18.00</td>
+        </tr>
+        <tr>
+          <td><img src="img/shop/icebreaker_thermal.jpg" alt="Icebreaker"></td>
+          <td><strong>Icebreaker Oasis / 脖圍</strong></td>
+          <td style="color:var(--purple);">門市 (D6) 齊全且 <b>85折以下</b>可買 (衣<$100 / 脖圍<$35)。</td>
+          <td>$35.0 - $150.0</td>
+        </tr>
+        <tr>
+          <td><img src="img/shop/kathmandu_merino.jpg" alt="Kathmandu"></td>
+          <td><strong>Kathmandu 排汗保暖衣</strong></td>
+          <td style="color:var(--purple);">基督城 CBD 店 (D9)。門市 <b>85折下</b>或<b>低於 $28</b> 必入。</td>
+          <td>$28.00 - $55.00</td>
+        </tr>
+      </tbody>
     </table>
+    <div style="padding:10px; font-size:12px; color:var(--danger);">💡 提示：手機版長按圖片可放大。酒類每人免稅限1公升，務必包毛巾雙重保護後託運。</div>
   </div>
 </div>
 
