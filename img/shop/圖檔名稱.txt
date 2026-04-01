@@ -1,3 +1,8 @@
+統一調整為 800 x 600 px 或 600 x 600 px (1:1 正方形)。
+格式： 建議使用 .webp (檔案小且清晰) 或 .jpg。
+解析度： 72 dpi 即可，單張圖儘量控制在 150KB 以下，以免影響網頁載入速度。
+
+採買清單命名對照表:
 品項名稱,建議英文檔名 (File Name),建議存檔路徑 (範例)
 Whittaker's 巧克力,whittakers_choc.jpg,img/shop/whittakers_choc.jpg
 Cookie Time 餅乾,cookietime_biscuits.jpg,img/shop/cookietime_biscuits.jpg
@@ -10,6 +15,69 @@ Trilogy 玫瑰果油,trilogy_oil.jpg,img/shop/trilogy_oil.jpg
 Icebreaker 保暖衣,icebreaker_thermal.jpg,img/shop/icebreaker_thermal.jpg
 Kathmandu 美利諾,kathmandu_merino.jpg,img/shop/kathmandu_merino.jpg
 
+請將以下 CSS 代碼加入到您 HTML 文件 <style> 標籤的最末端。這段代碼確保了圖片在表格中的呈現，並加入了 Hover (滑過) 放大 的效果，且兼容手機觸控：
+/* 採買指南表格圖片樣式 */
+.shop-table img {
+  width: 60px; /* 固定預覽寬度 */
+  height: 60px;
+  object-fit: cover; /* 確保圖片不變形 */
+  border-radius: 6px;
+  cursor: zoom-in;
+  transition: transform 0.3s ease; /* 平滑放大動畫 */
+}
+
+/* 滑過或點擊時放大特效 */
+.shop-table img:hover, .shop-table img:active {
+  transform: scale(2.5); /* 放大 2.5 倍 */
+  position: relative;
+  z-index: 100; /* 確保在最上層 */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* 針對手機端的優化 */
+@media (max-width: 600px) {
+  .shop-table th:nth-child(1), .shop-table td:nth-child(1) { width: 70px; } /* 調整圖片欄寬度 */
+  .shop-table img { width: 50px; height: 50px; }
+  .shop-table img:active { transform: scale(3); } /* 手機按住時放大更多 */
+}
+
+「超市 vs 藥妝」HTML 修改範本
+<div id="tab-shop" class="panel">
+  <div class="sec">🛒 超市 vs 藥妝：分類採買指南</div>
+  <div class="card">
+    <table class="shop-table" style="width:100%; border-collapse: collapse; font-size:13px;">
+      <thead>
+        <tr style="background:#f8f9fa; text-align:left;">
+          <th style="padding:10px; border-bottom:2px solid var(--border);">圖片</th>
+          <th style="padding:10px; border-bottom:2px solid var(--border);">品項</th>
+          <th style="padding:10px; border-bottom:2px solid var(--border);">推薦地點</th>
+          <th style="padding:10px; border-bottom:2px solid var(--border);">備註</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);">
+            <img src="img/shop/honey.jpg" alt="麥盧卡蜂蜜">
+          </td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>麥盧卡蜂蜜</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--kiwi);">New World / Pak'nSave</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">UMF標章越高越強</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);">
+            <img src="img/shop/lanolin.jpg" alt="綿羊油">
+          </td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>綿羊油 / 蜂膠膏</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--sky);">Chemist Warehouse</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">藥妝店買大包裝最划算</td>
+        </tr>
+        </tbody>
+    </table>
+    <div style="padding:10px; font-size:12px; color:var(--danger);">💡 提示：手機版請直接「長按圖片」即可放大檢視商品細節。</div>
+  </div>
+</div>
+
+剛剛生成的檔名都埋進去了
 <div id="tab-shop" class="panel">
   <div class="sec">🛒 超市 vs 藥妝：分類採買指南</div>
   <div class="card">
