@@ -1,0 +1,90 @@
+品項名稱,建議英文檔名 (File Name),建議存檔路徑 (範例)
+Whittaker's 巧克力,whittakers_choc.jpg,img/shop/whittakers_choc.jpg
+Cookie Time 餅乾,cookietime_biscuits.jpg,img/shop/cookietime_biscuits.jpg
+Red Seal 茶包,red_seal_tea.jpg,img/shop/red_seal_tea.jpg
+Manuka Honey Drops 喉糖,manuka_drops.jpg,img/shop/manuka_drops.jpg
+Alpine Silk 綿羊油,alpine_silk_cream.jpg,img/shop/alpine_silk_cream.jpg
+Barker's 果醬,barkers_jam.jpg,img/shop/barkers_jam.jpg
+Bruntwood Lane 羊毛香皂,wool_soap.jpg,img/shop/wool_soap.jpg
+Trilogy 玫瑰果油,trilogy_oil.jpg,img/shop/trilogy_oil.jpg
+Icebreaker 保暖衣,icebreaker_thermal.jpg,img/shop/icebreaker_thermal.jpg
+Kathmandu 美利諾,kathmandu_merino.jpg,img/shop/kathmandu_merino.jpg
+
+<div id="tab-shop" class="panel">
+  <div class="sec">🛒 超市 vs 藥妝：分類採買指南</div>
+  <div class="card">
+    <table class="shop-table" style="width:100%; border-collapse: collapse; font-size:13px;">
+      <thead>
+        <tr style="background:#f8f9fa; text-align:left;">
+          <th style="padding:10px; border-bottom:2px solid var(--border);">圖片</th>
+          <th style="padding:10px; border-bottom:2px solid var(--border);">品項</th>
+          <th style="padding:10px; border-bottom:2px solid var(--border);">推薦地點</th>
+          <th style="padding:10px; border-bottom:2px solid var(--border);">備註</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><img src="img/shop/whittakers_choc.jpg" alt="Whittaker's"></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>Whittaker's 巧克力</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--kiwi);">PAK'nSave (最便宜)</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">特價約 NZD$4，口味齊全</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><img src="img/shop/cookietime_biscuits.jpg" alt="Cookie Time"></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>Cookie Time 餅乾</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--kiwi);">各大超市 / 工廠店</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">工廠店有破損特價品</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><img src="img/shop/red_seal_tea.jpg" alt="Red Seal"></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>Red Seal 茶包</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--kiwi);">三家超市均有</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">超市最便宜，約 NZD$4</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><img src="img/shop/manuka_drops.jpg" alt="Manuka Drops"></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>Manuka Honey 喉糖</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--sky);">Chemist Warehouse</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">保健品區選擇更多</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><img src="img/shop/alpine_silk_cream.jpg" alt="Alpine Silk"></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>Alpine Silk 綿羊油</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--kiwi);">Woolworths / New World</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">平價品牌，媽媽推薦</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><img src="img/shop/barkers_jam.jpg" alt="Barker's"></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>Barker's 果醬</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--amber);">蒂卡波特產店 (D8)</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">產地購買更有紀念性</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><img src="img/shop/wool_soap.jpg" alt="Wool Soap"></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>羊毛香皂</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--amber);">特產店 / 紀念品店</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">D8 蒂卡波特產店購買</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><img src="img/shop/trilogy_oil.jpg" alt="Trilogy"></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>Trilogy 玫瑰果油</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--sky);">Life Pharmacy / CW</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">藥妝品項最齊全</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><img src="img/shop/icebreaker_thermal.jpg" alt="Icebreaker"></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>Icebreaker 保暖衣</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--purple);">皇后鎮店 / 機場免稅</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">D11 機場買可省 13%</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><img src="img/shop/kathmandu_merino.jpg" alt="Kathmandu"></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border);"><strong>Kathmandu 美利諾</strong></td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--purple);">品牌門市 / 超市</td>
+          <td style="padding:10px; border-bottom:1px solid var(--border); color:var(--gray);">戶外服飾專業品牌</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="padding:10px; font-size:12px; color:var(--danger);">💡 提示：手機版請直接「長按圖片」即可放大檢視商品細節。</div>
+  </div>
+</div>
