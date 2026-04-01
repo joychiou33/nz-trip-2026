@@ -8,7 +8,7 @@ Whittaker's 巧克力,whittakers_choc.jpg,img/shop/whittakers_choc.jpg
 Cookie Time 餅乾,cookietime_biscuits.jpg,img/shop/cookietime_biscuits.jpg
 Red Seal 茶包,red_seal_tea.jpg,img/shop/red_seal_tea.jpg
 Manuka Honey Drops 喉糖,manuka_drops.jpg,img/shop/manuka_drops.jpg
-Alpine Silk 綿羊油,alpine_silk_cream.jpg,img/shop/alpine_silk_cream.jpg
+Merino Silk 綿羊油,merino_silk_cream.jpg,img/shop/merino_silk_cream.jpg
 Barker's 果醬,barkers_jam.jpg,img/shop/barkers_jam.jpg
 Bruntwood Lane 羊毛香皂,wool_soap.jpg,img/shop/wool_soap.jpg
 Trilogy 玫瑰果油,trilogy_oil.jpg,img/shop/trilogy_oil.jpg
