@@ -8,6 +8,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Nunito:wght@600;800&display=swap');
 :root{--kiwi:#4a7c59;--kiwi-light:#e8f4ec;--kiwi-dark:#2d5238;--sky:#2e86c1;--sky-light:#eaf4fb;--amber:#d68910;--amber-light:#fef9e7;--danger:#c0392b;--danger-light:#fdedec;--purple:#7d3c98;--purple-light:#f4ecf7;--gray:#5d6d7e;--gray-light:#f2f3f4;--text:#1a252f;--text-muted:#5d6d7e;--border:#e8ecef;--shadow:0 2px 12px rgba(0,0,0,0.08);--radius:12px}
 *{box-sizing:border-box;margin:0;padding:0}
+/* 返回按鈕樣式 */
+.back-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 6px 14px;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    backdrop-filter: blur(4px); /* 背景模糊增加質感 */
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateX(-3px);
+}
 body{font-family:'Noto Sans TC',sans-serif;background:#f0f4f0;color:var(--text);min-height:100vh}
 .hero{background:linear-gradient(135deg,var(--kiwi-dark) 0%,var(--kiwi) 50%,#6aaa7a 100%);color:white;padding:36px 24px 28px;text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
@@ -120,6 +145,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f0f4f0;color:var(--text);
   <span id="overlay-hint">點任意處關閉</span>
 </div>
 <div class="hero">
+  <a href="index.html" class="back-btn">⬅ 回首頁</a>
   <span class="hero-emoji">🥝</span>
   <h1>紐西蘭南北島 12日行前攻略</h1>
   <p>小領隊版 · 2026年4月1日－4月12日</p>
