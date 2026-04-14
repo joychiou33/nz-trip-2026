@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joy's Travel Planner - 全球足跡</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-color: #f4f7f6;
+        }
+
+        body {
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--primary-color);
+        }
+
+        header {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        h1 { margin-bottom: 10px; }
+        p { color: #666; }
+
+        /* 地圖容器 */
+        .map-container {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 50px;
+        }
+
+        /* 這裡使用一張內建的 SVG 地圖底圖 */
+        .world-map {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Pin 標記點樣式 */
+        .pin {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s;
+            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.2);
+        }
+
+        .pin:hover {
+            transform: scale(1.5);
+        }
+
+        /* Pin 的文字標籤 */
+        .pin::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            display: none;
+        }
+
+        .pin:hover::after {
+            display: block;
+        }
+
+        /* 定位各個國家的 Pin (根據地圖比例調整百分比) */
+        .pin-nz { top: 85%; left: 88%; } /* 紐西蘭位置 */
+        .pin-sw { top: 32%; left: 49%; } /* 瑞士位置 */
+
+        /* 下方行程清單 */
+        .trip-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 1000px;
+            margin-bottom: 100px;
+        }
+
+        .trip-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+            border-left: 5px solid var(--accent-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .trip-card:hover {
+            transform: translateY(-50px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .trip-card h3 { margin-top: 0; color: var(--accent-color); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🌍 Joy's 全球自助旅行紀錄</h1>
+        <p>點擊地圖上的標記或下方的卡片查看詳細行程</p>
+    </header>
+
+    <div class="map-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg" class="world-map" alt="World Map">
+        
+        <a href="newzealand.html" class="pin pin-nz" data-label="2026/04 紐西蘭之旅"></a>
+        <a href="switzerland.html" class="pin pin-sw" data-label="2026/06 瑞士之旅"></a>
+    </div>
+
+    <div class="trip-list">
+        <a href="newzealand.html" class="trip-card">
+            <h3>🇳🇿 紐西蘭南北島</h3>
+            <p>12日行前攻略：雪山、湖泊與極限運動</p>
+            <small>2026年4月</small>
+        </a>
+
+        <a href="switzerland.html" class="trip-card">
+            <h3>🇨🇭 瑞士自助行程</h3>
+            <p>少女峰、策馬特健行規劃</p>
+            <small>2026年6月</small>
+        </a>
+    </div>
+
+</body>
+</html>
