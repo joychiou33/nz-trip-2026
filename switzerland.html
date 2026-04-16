@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🇨🇭 瑞士自助旅行 2026</title>
+<title>🇨🇭 瑞士自助旅行 2026 v6</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Nunito:wght@600;800&display=swap');
 :root{
@@ -18,7 +18,6 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);min-height:100vh}
-/* 返回按鈕 */
 .back-btn{position:absolute;top:15px;left:15px;z-index:10;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:6px 14px;color:white;text-decoration:none;font-size:12px;font-weight:500;backdrop-filter:blur(4px);display:flex;align-items:center;gap:4px;transition:all 0.2s}
 .back-btn:hover{background:rgba(255,255,255,0.4);transform:translateX(-3px)}
 .hero{background:linear-gradient(135deg,var(--swiss-dark) 0%,var(--swiss) 50%,#e85d52 100%);color:white;padding:36px 24px 28px;text-align:center;position:relative;overflow:hidden}
@@ -44,7 +43,16 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
 .alert-amber{background:var(--amber-light);color:#7d6608;border-left:3px solid var(--amber)}
 .alert-sky{background:var(--sky-light);color:#1a5276;border-left:3px solid var(--sky)}
 .alert-kiwi{background:var(--kiwi-light);color:var(--kiwi-dark);border-left:3px solid var(--kiwi)}
-.alert-purple{background:var(--purple-light);color:var(--purple);border-left:3px solid var(--purple)}
+/* 圖片與 Lightbox */
+.img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.img-thumb{border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--border);background:#f0f4f8;aspect-ratio:4/3;position:relative}
+.img-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .2s;-webkit-touch-callout:none;user-select:none}
+.img-thumb:hover img{transform:scale(1.04)}
+.img-thumb-caption{font-size:11px;color:var(--text-muted);text-align:center;padding:4px 6px;background:white;border-top:1px solid var(--border)}
+#img-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;cursor:pointer;flex-direction:column}
+#img-overlay.open{display:flex}
+#overlay-img{max-width:min(92vw,520px);max-height:85vh;width:auto;height:auto;border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,0.6);object-fit:contain;cursor:default;pointer-events:none;-webkit-touch-callout:none;user-select:none}
+#overlay-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.6);font-size:13px;pointer-events:none;white-space:nowrap}
 /* 每日備忘 */
 .day-item{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--border);align-items:flex-start}
 .day-item:last-child{border-bottom:none}
@@ -77,21 +85,11 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
 .pass-table tr:hover td{background:#fafafa}
 .pass-table tr.total td{background:var(--swiss-light);font-weight:700;color:var(--swiss-dark)}
 .pass-table tr.winner td{background:#e8f4ec;font-weight:700;color:#1b5e20}
+.pass-table tr.highlight td{background:var(--amber-light);font-weight:700;color:#7d6608}
 /* 路線圖 */
 .map-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;margin-bottom:14px}
 .map-card svg{display:block;width:100%}
-/* 圖片展示 */
-.img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
-.img-thumb{border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--border);background:#f0f4f8;aspect-ratio:4/3;position:relative}
-.img-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .2s}
-.img-thumb:hover img{transform:scale(1.04)}
-.img-thumb-caption{font-size:11px;color:var(--text-muted);text-align:center;padding:4px 6px;background:white;border-top:1px solid var(--border)}
-.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;flex-direction:column}
-.lightbox.active{display:flex}
-.lightbox img{max-width:92vw;max-height:82vh;border-radius:8px;object-fit:contain}
-.lightbox-caption{color:#ddd;font-size:13px;margin-top:10px;text-align:center}
-.lightbox-close{position:absolute;top:16px;right:20px;font-size:28px;color:white;cursor:pointer;background:none;border:none;line-height:1}
-/* 評估分析 */
+/* 評估 */
 .analysis-item{padding:12px 0;border-bottom:1px solid var(--border)}
 .analysis-item:last-child{border-bottom:none}
 .analysis-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
@@ -99,17 +97,15 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
 .badge-ok{background:var(--kiwi-light);color:var(--kiwi-dark)}
 .badge-warn{background:var(--amber-light);color:var(--amber)}
 .badge-fix{background:var(--swiss-light);color:var(--swiss-dark)}
-/* 住宿成本 */
-.hotel-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px}
-.hotel-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);padding:14px 16px}
+/* 住宿 */
+.hotel-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);padding:14px 16px;margin-bottom:10px}
 .hotel-name{font-size:14px;font-weight:700;color:var(--swiss-dark);margin-bottom:4px}
 .hotel-price{font-size:18px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--kiwi-dark)}
 .hotel-price-twd{font-size:12px;color:var(--text-muted);margin-left:6px}
-.hotel-tip{font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.6}
 .hotel-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;margin-right:4px;margin-bottom:4px}
 .htag-ok{background:var(--kiwi-light);color:var(--kiwi-dark)}
 .htag-warn{background:var(--amber-light);color:var(--amber)}
-/* 班車驗證 Tab */
+/* 班車驗證 */
 .train-section{margin-bottom:18px}
 .train-sec-title{font-size:13px;font-weight:700;color:var(--swiss-dark);background:var(--swiss-light);padding:7px 12px;border-radius:8px;margin-bottom:8px}
 .train-table{width:100%;border-collapse:collapse;font-size:12.5px}
@@ -117,42 +113,38 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
 .train-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
 .train-table tr:last-child td{border-bottom:none}
 .train-table tr:hover td{background:#fafafa}
-.verify-btn{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--sky-light);color:var(--sky);border:none;cursor:pointer;font-weight:600;text-decoration:none;display:inline-block}
 /* 評估卡片 */
 .eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .eval-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);padding:14px 16px}
 .eval-icon{font-size:22px;margin-bottom:6px}
 .eval-title{font-size:13px;font-weight:700;margin-bottom:4px}
 .eval-desc{font-size:12px;color:var(--text-muted);line-height:1.5}
-/* 活動卡片 */
-.act-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:14px}
-.act-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
+/* 活動 */
+.act-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;margin-bottom:12px}
 .act-header{padding:12px 16px;display:flex;align-items:flex-start;gap:12px}
 .act-emoji{font-size:28px;flex-shrink:0;margin-top:2px}
 .act-meta{flex:1}
 .act-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px}
 .act-where{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
-.act-tags{display:flex;flex-wrap:wrap;gap:4px}
 .act-body{padding:0 16px 14px;font-size:13px;line-height:1.65;color:var(--text)}
 .act-table{width:100%;font-size:12.5px;border-collapse:collapse;margin-top:10px}
 .act-table th{background:#f5f0f0;color:var(--swiss-dark);padding:6px 10px;text-align:left;font-size:11px;font-weight:700}
 .act-table td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
 .act-table tr:last-child td{border-bottom:none}
 .act-rec{padding:8px 16px;background:#fef9e7;border-top:1px solid var(--border);font-size:12px;color:#7d6608;line-height:1.6}
-.act-rec b{color:var(--amber)}
 /* 建議標籤 */
 .day-activity{font-size:12px;margin-top:7px;padding:7px 12px;background:#fef3e2;border-radius:8px;border-left:3px solid var(--amber);line-height:1.65;color:#5d4037}
 .day-activity-title{font-weight:700;color:var(--amber);margin-bottom:3px}
-.day-activity a{color:var(--amber);font-weight:700;text-decoration:underline dotted}
 /* 票價卡 */
 .ticket-box{background:#fafafa;border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin:12px 0}
-.ticket-box-title{font-size:13px;font-weight:700;color:var(--swiss-dark);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.ticket-box-title{font-size:13px;font-weight:700;color:var(--swiss-dark);margin-bottom:8px}
 .ticket-table{width:100%;border-collapse:collapse;font-size:12.5px}
 .ticket-table th{background:var(--swiss-light);color:var(--swiss-dark);padding:7px 10px;text-align:left;font-size:11px;font-weight:700}
 .ticket-table td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
 .ticket-table tr:last-child td{border-bottom:none}
 .ticket-table tr.highlight td{background:var(--kiwi-light);font-weight:700}
-/* 路線步驟 */
+.ticket-table tr.amber-hl td{background:var(--amber-light);font-weight:700;color:#7d6608}
+/* 步驟 */
 .route-steps{margin:10px 0}
 .step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
 .step-num{min-width:24px;height:24px;border-radius:50%;background:var(--swiss);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
@@ -172,24 +164,30 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
 .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
 .three-col-card{background:white;border-radius:8px;border:1px solid var(--border);padding:10px;text-align:center}
 /* 遊記連結 */
-.blog-link{display:inline-flex;align-items:center;gap:5px;background:var(--sky-light);color:var(--sky);border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none;margin:6px 4px 6px 0;border:1px solid #b3d7f0}
-.blog-link:hover{background:#d0e9fa}
-@media(max-width:480px){.hero h1{font-size:18px}.pass-table,.train-table{font-size:12px}.eval-grid,.ab-wrap,.three-col{grid-template-columns:1fr}.img-grid{grid-template-columns:1fr 1fr}}
+.blog-link{display:inline-flex;align-items:center;gap:5px;background:var(--sky-light);color:var(--sky);border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none;margin:4px 4px 4px 0;border:1px solid #b3d7f0}
+.blog-link:hover{background:#d0e9fa;text-decoration:underline}
+.blog-link::before{content:'🔗';font-size:11px}
+/* 湖泊卡片 */
+.lake-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.lake-card{background:var(--sky-light);border-radius:8px;padding:10px 12px;border-left:3px solid var(--sky)}
+.lake-name{font-size:13px;font-weight:700;color:var(--sky);margin-bottom:3px}
+.lake-desc{font-size:12px;color:var(--text-muted);line-height:1.5}
+.lake-star{color:var(--amber);font-size:11px;font-weight:700}
+@media(max-width:480px){.hero h1{font-size:18px}.pass-table,.train-table{font-size:12px}.eval-grid,.ab-wrap,.three-col,.lake-grid{grid-template-columns:1fr}.img-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
 <!-- Lightbox -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-  <img id="lb-img" src="" alt="">
-  <div class="lightbox-caption" id="lb-caption"></div>
+<div id="img-overlay" onclick="closeLightbox()">
+  <img id="overlay-img" src="" alt="">
+  <span id="overlay-hint">點任意處關閉</span>
 </div>
 
 <div class="hero">
   <a href="index.html" class="back-btn">⬅ 回首頁</a>
   <span class="hero-emoji">🇨🇭</span>
-  <h1>瑞士自助旅行行程規劃</h1>
+  <h1>瑞士自助旅行行程規劃 v6</h1>
   <p>2026年6月16日（二）－ 6月26日（五）｜策馬特 × 茵特拉肯 × 琉森 × 蘇黎世</p>
   <div class="hero-tags">
     <span class="hero-tag">✈️ 長榮 + 瑞航</span>
@@ -211,167 +209,126 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
 
 <!-- ===== TAB 1: 行程評估 ===== -->
 <div id="tab-eval" class="panel active">
-<div class="alert alert-red">📌 <b>行程概覽</b>：6/16(二)晚出發 → 6/17(三)早抵蘇黎世 → <b>策馬特3晚</b>（D1–D4）→ <b>茵特拉肯3晚</b>（D4–D7）→ <b>琉森1晚</b>（D7–D8）→ 蘇黎世半日 → 6/25(四)深夜離境。台灣出發到回程共請假 <b>約7.5天</b>。</div>
+<div class="alert alert-red">📌 <b>行程概覽</b>：6/16(二)晚出發 → 6/17(三)早抵蘇黎世 → <b>策馬特3晚</b>（D1–D4）→ <b>茵特拉肯3晚</b>（D4–D7）→ <b>琉森1晚</b>（D7–D8）→ 蘇黎世半日 → 6/25(四)深夜離境。請假約 <b>7.5天</b>。</div>
 
-<div class="sec">✅ 可行性評估 &amp; 調整建議</div>
+<div class="sec">✅ 可行性評估</div>
 <div class="card" style="padding:14px 18px">
-
   <div class="analysis-item">
     <div class="analysis-title"><span class="badge badge-ok">✓ 可行</span>策馬特 3 晚（D1–D4）</div>
-    <div style="font-size:13px;line-height:1.65;margin-top:4px;color:var(--kiwi-dark)">
-      ✅ D1輕鬆到達逛老城、D2五湖健行（晴天優先）、D3 Gornergrat + Riffelsee 健行（晴天優先）、D4上午視天氣執行冰川天堂或直接移動茵特拉肯（兩方案詳見每日時程）。<br>
-      ⚠️ D1搭了15小時飛機後抵達，今天只能輕鬆安排。五湖健行和Gornergrat務必留至D2/D3天氣好的日子。
-    </div>
+    <div style="font-size:13px;line-height:1.65;margin-top:4px;color:var(--kiwi-dark)">D1輕鬆到達、D2五湖健行（晴天優先）、D3 Gornergrat + Riffelsee、D4視天氣執行冰川天堂或直接移動茵特拉肯。⚠️ D1飛行15小時，務必只輕鬆安排。</div>
   </div>
-
   <div class="analysis-item">
-    <div class="analysis-title"><span class="badge badge-warn">⚠️ 策略</span>冰川天堂：雨天/D4移動日前半天最佳</div>
-    <div style="font-size:13px;line-height:1.65;margin-top:4px;color:#7d6608">
-      D2/D3 雨天首選（山頂常在雲層上方有日照），或安排在 D4 上午執行後再移動茵特拉肯。與 Gornergrat 同天行程超過10小時，不建議。
-    </div>
+    <div class="analysis-title"><span class="badge badge-warn">⚠️ 策略</span>冰川天堂：雨天備案或D4移動日前半天</div>
+    <div style="font-size:13px;line-height:1.65;margin-top:4px;color:#7d6608">山頂（3,883m）通常在雲層上方有日照，是最佳雨天選擇。與Gornergrat同天超過10小時，不建議。</div>
   </div>
-
   <div class="analysis-item">
     <div class="analysis-title"><span class="badge badge-ok">✓ 可行</span>茵特拉肯 3 晚（D4–D7）</div>
-    <div style="font-size:13px;line-height:1.65;margin-top:4px;color:var(--kiwi-dark)">
-      ✅ 3晚涵蓋：少女峰（選天氣最佳日）＋ 瀑布區 ＋ 布里恩茨湖遊船 ＋ 聖貝亞圖斯洞穴。<br>
-      ⚠️ <b>2026年4月13日–7月10日 Lauterbrunnen-Grütschalp 纜車停工</b>，前往 Mürren 須改走 Stechelberg 路線（公車+纜車）。少女峰和瀑布鎮完全不受影響。
-    </div>
+    <div style="font-size:13px;line-height:1.65;margin-top:4px;color:var(--kiwi-dark)">D5少女峰（選最佳天氣日）、D6布里恩茨湖/洞穴或Grindelwald First Adventure、D7午後移琉森。<br>⚠️ 2026/4/13–7/10 Lauterbrunnen-Grütschalp 纜車停工，少女峰和瀑布鎮完全不受影響。</div>
   </div>
-
   <div class="analysis-item">
-    <div class="analysis-title"><span class="badge badge-warn">⚠️ 精簡</span>少女峰那天不要再塞其他行程</div>
-    <div style="font-size:13px;line-height:1.65;margin-top:4px;color:#7d6608">
-      少女峰全程來回7-8小時，已非常充實。Wengernalp 健行可作為 D5 B方案彈性加入；瀑布鎮獨立排一天更好。
-    </div>
+    <div class="analysis-title"><span class="badge badge-warn">⚠️ 精簡</span>少女峰那天只做少女峰</div>
+    <div style="font-size:13px;line-height:1.65;margin-top:4px;color:#7d6608">全程7-8小時已非常充實。Wengernalp健行可作彈性選項；若選方案B（下山健行至Lauterbrunnen），瀑布鎮就順道包含在內。</div>
   </div>
-
   <div class="analysis-item">
     <div class="analysis-title"><span class="badge badge-ok">✓ 合理</span>琉森1晚 + 皮拉圖斯（D7–D8）</div>
-    <div style="font-size:13px;line-height:1.65;margin-top:4px;color:var(--kiwi-dark)">
-      ✅ 涵蓋：下午城區散步（卡貝爾橋、垂死獅子像）＋ 隔天皮拉圖斯金色環遊，非常充實。
-    </div>
+    <div style="font-size:13px;line-height:1.65;margin-top:4px;color:var(--kiwi-dark)">D7下午城區散步 + D8皮拉圖斯金色環遊，一晚已夠充實。</div>
   </div>
 </div>
 
 <div class="sec">⚠️ 關鍵注意事項</div>
-<div class="alert alert-amber">⚠️ <b>ETIAS 申請</b>：台灣護照持有人自2025年起需申請ETIAS（歐盟旅遊授權），費用€7，線上申請，建議出發前<b>至少2週</b>辦理（travel-europe.europa.eu/etias）。</div>
-<div class="alert alert-red">⚠️ <b>Lauterbrunnen-Grütschalp 纜車停工</b>：2026年4月13日–7月10日，少女峰和瀑布鎮完全不受影響。</div>
-<div class="alert alert-sky">💡 <b>少女峰座位預訂</b>：5–10月強制，CHF 10/人，提前在 jungfrau.ch 預訂。</div>
-<div class="alert alert-amber">❄️ <b>高海拔梯度</b>：冰川天堂 3,883m → 少女峰 3,454m → Gornergrat 3,089m。上到高海拔後慢慢移動、多喝水。有嚴重頭痛噁心立即下山。</div>
+<div class="alert alert-amber">⚠️ ETIAS申請：台灣護照自2025年起需申請，費用€7，出發前至少2週辦理（travel-europe.europa.eu/etias）。</div>
+<div class="alert alert-red">⚠️ Lauterbrunnen-Grütschalp 纜車停工：2026/4/13–7/10，少女峰和瀑布鎮完全不受影響。</div>
+<div class="alert alert-sky">💡 少女峰座位預訂（5–10月強制，CHF 10）：提前在 jungfrau.ch 預訂。旺季現場排隊可達1小時以上！</div>
+<div class="alert alert-amber">❄️ 高海拔梯度：冰川天堂3,883m > 少女峰3,454m > Gornergrat3,089m。上去後慢慢移動、多喝水。有嚴重頭痛噁心立即下山。</div>
 
 <div class="sec">🌧️ 雨天備案總覽</div>
 <div class="card">
   <div style="font-size:13px;line-height:1.85">
-    <b>策馬特 🌧️</b>：馬特洪峰冰川天堂（山頂常在雲層上方）→ 策馬特博物館 Zermatlantis（CHF 12）→ 老城紀念品 → Gorner Gorge 峽谷步道<br><br>
-    <b>茵特拉肯 🌧️</b>：聖貝亞圖斯洞穴（地下，CHF 26）→ Grindelwald First → 市區咖啡廳<br><br>
-    <b>琉森 🌧️</b>：皮拉圖斯山（雲霧有特殊氛圍）→ Rosengart Collection（克利+畢卡索，CHF 20）→ 舊城廊橋
+    <b>策馬特 🌧️</b>：冰川天堂（山頂常在雲層上方）→ 策馬特博物館 Zermatlantis（CHF 12）→ 老城逛街 → Gorner Gorge 峽谷步道<br><br>
+    <b>茵特拉肯 🌧️</b>：聖貝亞圖斯洞穴（地下，CHF 26）→ Grindelwald First Cliff Walk + Flyer（雨天仍可）→ 市區咖啡廳<br><br>
+    <b>琉森 🌧️</b>：皮拉圖斯山（雲霧特殊氛圍）→ Rosengart Collection（克利+畢卡索，CHF 20）→ 舊城廊橋
   </div>
 </div>
 </div>
 
-<!-- ===== TAB 2: 航班住宿（原 航班時差 + 住宿成本 合併） ===== -->
+<!-- ===== TAB 2: 航班住宿 ===== -->
 <div id="tab-flight" class="panel">
-
 <div class="sec">✈️ 去程航班</div>
 <div class="card">
   <div class="card-title">長榮 BR809 + 瑞航 LX139（香港轉機）</div>
   <div style="padding:10px;line-height:1.75;font-size:14px;color:#2c3e50;">
-    <p style="margin-top:0;"><b>● 第一段：台北桃園T2 → 香港T1</b><br>
-    出發：06/16 (二) 19:00 | 抵達：06/16 (二) 20:45<br>
-    <span style="color:var(--sky);">⏱ 飛行：1小時45分（香港＝台灣，無時差）</span></p>
-    <div style="background:var(--sky-light);border-left:4px solid var(--sky);padding:8px 12px;margin:10px 0;border-radius:6px;"><b>⏳ 香港候機轉機</b>：20:45 → 23:05（約2小時20分）代號 CS7K5B</div>
-    <p><b>● 第二段：香港T1 → 蘇黎世</b><br>
-    出發：06/16 (二) 23:05 | 抵達：06/17 (三) 06:10 蘇黎世時間<br>
-    <span style="color:var(--sky);">⏱ 飛行：13小時5分</span></p>
-    <hr style="border:0;border-top:1px dashed #ccc;margin:10px 0;">
+    <p style="margin-top:0;"><b>● 台北桃園T2 → 香港T1</b>：06/16 (二) 19:00 出發 → 20:45 抵達（1h45m）</p>
+    <div style="background:var(--sky-light);border-left:4px solid var(--sky);padding:8px 12px;margin:10px 0;border-radius:6px;"><b>⏳ 香港候機</b>：20:45 → 23:05（約2h20m）代號 CS7K5B</div>
+    <p><b>● 香港T1 → 蘇黎世</b>：06/16 (二) 23:05 出發 → 06/17 (三) 06:10 抵達（13h5m）</p>
     <p style="font-size:13px;margin-bottom:0;">📌 <b>蘇黎世時差</b>：台灣 −6小時（6月 CEST = UTC+2）<br>
-    💡 抵達後建議搭 <b>07:46 首班快車</b> 至策馬特（Visp 轉車，約 11:20 抵達）</p>
+    💡 抵達後搭 <b>07:46 首班快車</b> 至策馬特（Visp 轉車，約 11:20 抵達）</p>
   </div>
 </div>
-
 <div class="sec">✈️ 回程航班</div>
 <div class="card">
   <div class="card-title">瑞航 LX138 + 長榮 BR872（香港轉機）</div>
   <div style="padding:10px;line-height:1.75;font-size:14px;color:#2c3e50;">
-    <p style="margin-top:0;"><b>● 第一段：蘇黎世 → 香港</b><br>
-    出發：06/25 (四) 22:30 | 抵達：06/26 (五) 16:35 香港時間<br>
-    <span style="color:var(--sky);">⏱ 飛行：12小時5分</span></p>
-    <div style="background:var(--sky-light);border-left:4px solid var(--sky);padding:8px 12px;margin:10px 0;border-radius:6px;"><b>⏳ 香港轉機</b>：16:35 → 19:40（3小時5分）</div>
-    <p><b>● 第二段：香港T1 → 台北桃園T2</b><br>
-    出發：06/26 (五) 19:40 | 抵達：06/26 (五) 21:30</p>
+    <p style="margin-top:0;"><b>● 蘇黎世 → 香港</b>：06/25 (四) 22:30 出發 → 06/26 (五) 16:35 抵香港（12h5m）</p>
+    <div style="background:var(--sky-light);border-left:4px solid var(--sky);padding:8px 12px;margin:10px 0;border-radius:6px;"><b>⏳ 香港轉機</b>：16:35 → 19:40（3h5m）</div>
+    <p><b>● 香港T1 → 台北桃園T2</b>：06/26 19:40 出發 → 21:30 抵台（1h50m）</p>
   </div>
 </div>
-
-<div class="sec">📅 請假天數 &amp; 時差說明</div>
+<div class="sec">📅 請假天數 &amp; 時差提醒</div>
 <div class="card">
   <div style="font-size:13px;line-height:1.9">
-    <b>請假天數</b>（假設週一至週五上班）：6/16(二)下午半天 + 6/17–25（7個工作天）＝ <b>約7.5天</b><br><br>
+    <b>請假天數</b>：6/16下午半天 + 6/17–25（7個工作天）＝ <b>約7.5天</b><br><br>
     <b>⏰ 時差重點</b>：<br>
-    • <b>去程</b>：搭機15小時後抵蘇黎世06:10，再搭火車至策馬特11:20，身體已持續清醒超過20小時。第一天務必輕鬆安排。<br>
-    • 台灣晚上10點 = 蘇黎世下午4點（CEST，夏令時間）<br>
-    • <b>回程</b>：6/26 抵台已是晚上9:30，正常睡一覺即可調整。
+    • <b>去程</b>：飛行15h+後抵蘇黎世06:10，再搭火車至策馬特11:20，身體已清醒超過20小時。D1務必輕鬆！<br>
+    • 台灣晚上10點 = 蘇黎世下午4點（CEST夏令時間）<br>
+    • <b>回程</b>：6/26抵台已是晚上9:30，正常睡一覺即可調整。
   </div>
 </div>
 <div class="alert alert-amber">💡 <b>出發前必備清單</b>：護照（有效期6個月以上）｜ETIAS申請€7｜瑞士法郎現金｜萬用插頭（230V，兩腳圓柱）｜SBB App｜MeteoSwiss App｜旅遊保險</div>
 
 <div class="sec">🏨 住宿安排與應對策略</div>
-<div class="hotel-grid">
-  <div class="hotel-card">
-    <div class="hotel-name">🏔️ 策馬特（D1–D4）｜Hotel Bahnhof Zermatt</div>
-    <div style="margin:8px 0"><span class="hotel-price">CHF 464</span><span class="hotel-price-twd">≈ TWD 17,632（雙人3晚）</span></div>
-    <div style="margin-bottom:6px">
-      <span class="hotel-tag htag-warn">⚠️ 雙人共用衛浴</span>
-      <span class="hotel-tag htag-warn">⚠️ 無早餐</span>
-      <span class="hotel-tag htag-ok">✅ 火車站正對面1分鐘</span>
-      <span class="hotel-tag htag-ok">✅ Gornergrat站斜對面50m</span>
-    </div>
-    <div class="hotel-tip">
-      • D1 抵達先去 <b>Coop 採買</b>（班霍夫大街，步行5分）：隔天健行乾糧（麵包、起司、能量棒）<br>
-      • 共用衛浴避開早7:00–8:00尖峰，可提早6:30或延至8:30<br>
-      • 無早餐省下費用，山上餐廳極貴，建議自備保溫瓶裝熱飲
-    </div>
+<div class="hotel-card">
+  <div class="hotel-name">🏔️ 策馬特（D1–D4）｜Hotel Bahnhof Zermatt</div>
+  <div style="margin:8px 0"><span class="hotel-price">CHF 464</span><span class="hotel-price-twd">≈ TWD 17,632（雙人3晚）</span></div>
+  <div style="margin-bottom:6px">
+    <span class="hotel-tag htag-warn">⚠️ 雙人共用衛浴</span><span class="hotel-tag htag-warn">⚠️ 無早餐</span>
+    <span class="hotel-tag htag-ok">✅ 火車站正對面1分鐘</span><span class="hotel-tag htag-ok">✅ Gornergrat站斜對面50m</span>
   </div>
-  <div class="hotel-card">
-    <div class="hotel-name">🏡 茵特拉肯（D4–D7）｜Villa Sonnenhof</div>
-    <div style="margin:8px 0"><span class="hotel-price">CHF 474</span><span class="hotel-price-twd">≈ TWD 18,572（雙人3晚）</span></div>
-    <div style="margin-bottom:6px">
-      <span class="hotel-tag htag-ok">✅ 含早餐</span>
-      <span class="hotel-tag htag-ok">✅ 私人衛浴</span>
-      <span class="hotel-tag htag-ok">✅ 全程最舒適據點</span>
-    </div>
-    <div class="hotel-tip">
-      • 少女峰前務必在飯店享用豐盛早餐，山上漢堡 CHF 22–28<br>
-      • 帶保溫瓶裝早餐熱飲、自備泡麵（山頂有熱水可用）<br>
-      • 地點介於 Interlaken West / East 之間，兩個火車站步行可達
-    </div>
-  </div>
-  <div class="hotel-card">
-    <div class="hotel-name">🌉 琉森（D7–D8）｜Hotel Alpha, Garni</div>
-    <div style="margin:8px 0"><span class="hotel-price">CHF 293</span><span class="hotel-price-twd">≈ TWD 11,134（雙人1晚）</span></div>
-    <div style="margin-bottom:6px">
-      <span class="hotel-tag htag-ok">✅ 含早餐</span>
-      <span class="hotel-tag htag-warn">⚠️ 無廚房</span>
-      <span class="hotel-tag htag-warn">⚠️ 火車站步行12分</span>
-    </div>
-    <div class="hotel-tip">
-      • 晚上無法自煮，去 Coop / Migros 買熟食（烤雞約 CHF 12）<br>
-      • Migros 在琉森火車站附近，通常開到晚上9點
-    </div>
+  <div style="font-size:12px;color:var(--text-muted);line-height:1.6">
+    • D1 抵達先去 Coop（班霍夫大街步行5分）採買隔天健行乾糧<br>
+    • 共用衛浴避開早7:00–8:00尖峰；無早餐→帶保溫瓶省山上高昂餐費
   </div>
 </div>
+<div class="hotel-card">
+  <div class="hotel-name">🏡 茵特拉肯（D4–D7）｜Villa Sonnenhof</div>
+  <div style="margin:8px 0"><span class="hotel-price">CHF 474</span><span class="hotel-price-twd">≈ TWD 18,572（雙人3晚）</span></div>
+  <div style="margin-bottom:6px">
+    <span class="hotel-tag htag-ok">✅ 含早餐</span><span class="hotel-tag htag-ok">✅ 私人衛浴</span><span class="hotel-tag htag-ok">✅ 全程最舒適</span>
+  </div>
+  <div style="font-size:12px;color:var(--text-muted);line-height:1.6">
+    • 少女峰前務必在飯店吃豐盛早餐，山上漢堡 CHF 22–28<br>
+    • 帶保溫瓶裝早餐熱飲、自備泡麵（山頂有熱水）省CHF 20–30
+  </div>
+</div>
+<div class="hotel-card">
+  <div class="hotel-name">🌉 琉森（D7–D8）｜Hotel Alpha, Garni</div>
+  <div style="margin:8px 0"><span class="hotel-price">CHF 293</span><span class="hotel-price-twd">≈ TWD 11,134（雙人1晚）</span></div>
+  <div style="margin-bottom:6px">
+    <span class="hotel-tag htag-ok">✅ 含早餐</span><span class="hotel-tag htag-warn">⚠️ 無廚房</span><span class="hotel-tag htag-warn">⚠️ 火車站步行12分</span>
+  </div>
+  <div style="font-size:12px;color:var(--text-muted);line-height:1.6">晚上無法自煮，去 Coop / Migros 買熟食（烤雞約 CHF 12），Migros 琉森火車站附近開至晚9點</div>
+</div>
 
-<div class="sec">💰 住宿小計 &amp; 旅費概算（每人）</div>
+<div class="sec">💰 旅費概算（每人）</div>
 <div class="card" style="padding:0;overflow:hidden">
   <table class="pass-table">
     <tr><th>費用項目</th><th>金額（每人）</th><th>說明</th></tr>
-    <tr><td><b>機票（長榮+瑞航）</b></td><td>~TWD 26,000</td><td>香港轉機來回，參考值</td></tr>
-    <tr><td><b>住宿小計（3地雙人平攤）</b></td><td>~TWD 23,669</td><td>CHF 464+474+293 = 1,231 CHF ÷ 2人 × 38</td></tr>
-    <tr><td><b>半價卡（Swiss Half Fare Card）</b></td><td>CHF 150（~TWD 5,700）</td><td>強烈建議，省約 CHF 367 景點+交通</td></tr>
+    <tr><td><b>機票</b></td><td>~TWD 26,000</td><td>長榮+瑞航，香港轉機來回</td></tr>
+    <tr><td><b>住宿（三地雙人平攤）</b></td><td>~TWD 23,669</td><td>CHF 1,231 ÷ 2人 × 38</td></tr>
+    <tr><td><b>半價卡</b></td><td>CHF 150（~TWD 5,700）</td><td>強烈建議，省約 CHF 369</td></tr>
     <tr><td><b>城市間交通（半價後）</b></td><td>CHF ~132（~TWD 5,016）</td><td>機場→策馬特、策→因、因→琉、琉→蘇</td></tr>
-    <tr><td><b>山岳景點票（半價後）</b></td><td>CHF ~233（~TWD 8,854）</td><td>Gornergrat 66 + 五湖 25 + 少女峰 118 + 皮拉圖斯 36 ＋冰川天堂 92 = 337 CHF，含冰川天堂或不含可彈性計算</td></tr>
-    <tr><td><b>餐費（估每天 CHF 40–60）</b></td><td>CHF ~360（~TWD 13,680）</td><td>9天×40 CHF平均（策馬特自炊，茵特拉肯有早餐）</td></tr>
-    <tr class="total"><td><b>每人估計總費用</b></td><td><b>~TWD 83,000–92,000</b></td><td>含機票、住宿、交通、景點、餐飲</td></tr>
+    <tr><td><b>山岳景點票（半價後）</b></td><td>CHF ~337（~TWD 12,806）</td><td>Gornergrat 66 + 五湖 25 + 少女峰 103（早安票）或 118（一般半價）+ 冰川天堂 92 + 皮拉圖斯 36</td></tr>
+    <tr><td><b>餐費（估每天CHF 40–60）</b></td><td>CHF ~360（~TWD 13,680）</td><td>9天×40 CHF 平均</td></tr>
+    <tr class="total"><td><b>每人估計總費用</b></td><td><b>~TWD 86,000–94,000</b></td><td>含機票、住宿、交通、景點、餐飲</td></tr>
   </table>
 </div>
 <div class="alert alert-amber">💡 CHF 1 ≈ TWD 38（參考匯率）。建議帶 CHF 500–800 現金備用，VISA / Mastercard 最廣用。</div>
@@ -379,27 +336,17 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
 
 <!-- ===== TAB 3: 路線圖 ===== -->
 <div id="tab-map" class="panel">
-
 <div class="sec">瑞士行程路線示意</div>
 <div class="map-card">
 <svg viewBox="0 0 400 370" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC',sans-serif">
   <defs>
-    <marker id="arrd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-      <path d="M2 2L8 5L2 8" fill="none" stroke="#d52b1e" stroke-width="1.8" stroke-linecap="round"/>
-    </marker>
-    <marker id="arrb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-      <path d="M2 2L8 5L2 8" fill="none" stroke="#1565c0" stroke-width="1.8" stroke-linecap="round"/>
-    </marker>
-    <marker id="arrp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-      <path d="M2 2L8 5L2 8" fill="none" stroke="#7d3c98" stroke-width="1.8" stroke-linecap="round"/>
-    </marker>
-    <marker id="arrg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-      <path d="M2 2L8 5L2 8" fill="none" stroke="#2e7d32" stroke-width="1.8" stroke-linecap="round"/>
-    </marker>
+    <marker id="arrd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="#d52b1e" stroke-width="1.8" stroke-linecap="round"/></marker>
+    <marker id="arrb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="#1565c0" stroke-width="1.8" stroke-linecap="round"/></marker>
+    <marker id="arrp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="#7d3c98" stroke-width="1.8" stroke-linecap="round"/></marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="#2e7d32" stroke-width="1.8" stroke-linecap="round"/></marker>
   </defs>
   <rect width="400" height="370" fill="#f5f0f0"/>
-  <path d="M65 125 C85 98,140 88,195 93 C245 98,292 105,330 120 C358 130,362 148,350 168 C338 186,312 194,296 210 C278 228,270 238,264 260 C256 283,243 295,216 300 C190 305,163 298,138 287 C112 276,87 268,70 248 C52 228,47 198,56 172 C64 150,55 148,65 125Z"
-    fill="#eddcd2" stroke="#c0392b" stroke-width="1.2" opacity="0.7"/>
+  <path d="M65 125 C85 98,140 88,195 93 C245 98,292 105,330 120 C358 130,362 148,350 168 C338 186,312 194,296 210 C278 228,270 238,264 260 C256 283,243 295,216 300 C190 305,163 298,138 287 C112 276,87 268,70 248 C52 228,47 198,56 172 C64 150,55 148,65 125Z" fill="#eddcd2" stroke="#c0392b" stroke-width="1.2" opacity="0.7"/>
   <text x="280" y="90" font-size="10" fill="#aaa">德國</text>
   <text x="355" y="200" font-size="10" fill="#aaa">奧地利</text>
   <text x="252" y="318" font-size="10" fill="#aaa">義大利</text>
@@ -429,43 +376,27 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
   <text x="198" y="163" font-size="9" fill="#7d3c98" font-weight="bold">1h50m</text>
   <text x="248" y="112" font-size="9" fill="#2e7d32" font-weight="bold">50m</text>
   <rect x="10" y="295" width="380" height="65" rx="8" fill="white" fill-opacity="0.92" stroke="#ddd" stroke-width="0.8"/>
-  <line x1="20" y1="312" x2="50" y2="312" stroke="#d52b1e" stroke-width="2.2" stroke-dasharray="6 3"/>
-  <text x="56" y="316" font-size="10" fill="#555">蘇黎世機場 → 策馬特（SBB，Visp轉）</text>
-  <line x1="20" y1="330" x2="50" y2="330" stroke="#1565c0" stroke-width="2.2" stroke-dasharray="6 3"/>
-  <text x="56" y="334" font-size="10" fill="#555">策馬特 → 茵特拉肯（Spiez轉）</text>
-  <line x1="200" y1="312" x2="230" y2="312" stroke="#7d3c98" stroke-width="2.2" stroke-dasharray="6 3"/>
-  <text x="236" y="316" font-size="10" fill="#555">茵特拉肯 → 琉森（直達景觀）</text>
-  <line x1="200" y1="330" x2="230" y2="330" stroke="#2e7d32" stroke-width="2.2" stroke-dasharray="6 3"/>
-  <text x="236" y="334" font-size="10" fill="#555">琉森 → 蘇黎世 → 機場</text>
+  <line x1="20" y1="312" x2="50" y2="312" stroke="#d52b1e" stroke-width="2.2" stroke-dasharray="6 3"/><text x="56" y="316" font-size="10" fill="#555">蘇黎世機場 → 策馬特（SBB，Visp轉）</text>
+  <line x1="20" y1="330" x2="50" y2="330" stroke="#1565c0" stroke-width="2.2" stroke-dasharray="6 3"/><text x="56" y="334" font-size="10" fill="#555">策馬特 → 茵特拉肯（Spiez轉）</text>
+  <line x1="200" y1="312" x2="230" y2="312" stroke="#7d3c98" stroke-width="2.2" stroke-dasharray="6 3"/><text x="236" y="316" font-size="10" fill="#555">茵特拉肯 → 琉森（直達景觀）</text>
+  <line x1="200" y1="330" x2="230" y2="330" stroke="#2e7d32" stroke-width="2.2" stroke-dasharray="6 3"/><text x="236" y="334" font-size="10" fill="#555">琉森 → 蘇黎世 → 機場</text>
   <text x="14" y="352" font-size="10" fill="#c0392b">行程：台北 → 蘇黎世機場 → 策馬特(3晚) → 茵特拉肯(3晚) → 琉森(1晚) → 蘇黎世 → 台北</text>
 </svg>
 </div>
 
-<div class="sec">🚂 城市間交通概覽</div>
-<div class="card" style="padding:0;overflow:hidden">
-  <table class="pass-table">
-    <tr><th>路段</th><th>方式</th><th>時間</th><th>全價 / 半價後</th></tr>
-    <tr><td>蘇黎世機場 → 策馬特</td><td>SBB（Visp 轉車）</td><td>~3h30m</td><td>CHF ~110 / ~55</td></tr>
-    <tr><td>策馬特 → 茵特拉肯 Ost</td><td>SBB（Spiez 轉車）</td><td>~2h15m</td><td>CHF ~82 / ~41</td></tr>
-    <tr><td>茵特拉肯 Ost → 琉森</td><td>Luzern-Interlaken Express（直達）</td><td>~1h50m</td><td>CHF ~38 / ~19</td></tr>
-    <tr><td>琉森 → 蘇黎世 HB</td><td>SBB IC（直達）</td><td>~50m</td><td>CHF ~26 / ~13</td></tr>
-    <tr><td>蘇黎世 HB → 機場</td><td>SBB S-Bahn S16</td><td>~12m</td><td>CHF ~7 / ~4</td></tr>
-  </table>
-</div>
-
-<div class="sec">🗺️ 策馬特城鎮 &amp; 三大纜車系統</div>
-<a href="https://twoslowbyron.com/zermatt-guide/" target="_blank" class="blog-link">📖 Byron 策馬特城鎮完整導覽</a>
+<div class="sec">🗺️ 策馬特城鎮 &amp; 三大纜車系統位置</div>
+<a href="https://twoslowbyron.com/zermatt-guide/" target="_blank" class="blog-link">策馬特城鎮完整導覽</a>
 <div class="img-grid">
   <div class="img-thumb" onclick="openLightbox('img/map/ch_zermatt_station.jpg','策馬特車站地圖 — 三大纜車站位置')">
-    <img src="img/map/ch_zermatt_station.jpg" alt="策馬特車站地圖" onerror="this.parentElement.style.background='#e8ecef'">
+    <img src="img/map/ch_zermatt_station.jpg" alt="策馬特車站地圖" loading="lazy">
     <div class="img-thumb-caption">策馬特車站地圖</div>
   </div>
   <div class="img-thumb" onclick="openLightbox('img/map/ch_zermatt_transportation.jpg','策馬特交通系統示意圖')">
-    <img src="img/map/ch_zermatt_transportation.jpg" alt="策馬特交通示意" onerror="this.parentElement.style.background='#e8ecef'">
+    <img src="img/map/ch_zermatt_transportation.jpg" alt="策馬特交通示意" loading="lazy">
     <div class="img-thumb-caption">交通系統示意</div>
   </div>
   <div class="img-thumb" onclick="openLightbox('img/map/ch_zermatt_town.jpg','策馬特城鎮全景地圖')">
-    <img src="img/map/ch_zermatt_town.jpg" alt="策馬特城鎮地圖" onerror="this.parentElement.style.background='#e8ecef'">
+    <img src="img/map/ch_zermatt_town.jpg" alt="策馬特城鎮地圖" loading="lazy">
     <div class="img-thumb-caption">城鎮全景地圖</div>
   </div>
 </div>
@@ -488,18 +419,17 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
     </div>
   </div>
   <div style="font-size:12.5px;line-height:1.7;color:var(--text-muted)">
-    💡 <b>主軸：班霍夫大街（Bahnhofstrasse）</b> — Coop 超市步行5分；電動綠線巴士免費連接三大纜車站；Google Maps 搜尋「Sunnegga Blauherd Rothorn Funicular」可定位纜索車站入口。
+    💡 <b>主軸：班霍夫大街（Bahnhofstrasse）</b> — Coop步行5分；電動綠線巴士免費連接三大纜車站；Google Maps 搜尋「Sunnegga Blauherd Rothorn Funicular」定位纜索車站。
   </div>
 </div>
 
-<div class="sec">📊 三大景點快速比較</div>
+<div class="sec">📊 策馬特三大景點快速比較</div>
 <div class="card" style="padding:0;overflow:hidden">
   <table class="pass-table">
-    <tr><th>項目</th><th>五湖健行（D2）</th><th>Gornergrat（D3）</th><th>冰川天堂（D2/D3雨備或D4）</th></tr>
+    <tr><th>項目</th><th>五湖健行（D2）</th><th>Gornergrat（D3）</th><th>冰川天堂（雨備或D4）</th></tr>
     <tr><td><b>頂點海拔</b></td><td>Blauherd 2,571m</td><td>Gornergrat 3,089m</td><td>Klein Matterhorn 3,883m 🔝</td></tr>
     <tr><td><b>票價（半價後）</b></td><td>CHF ~25</td><td>CHF 66</td><td>CHF 92（6月肩季）</td></tr>
     <tr><td><b>所需時間</b></td><td>~5h（含健行）</td><td>~5h（含Riffelsee）</td><td>~3–4h（全纜車）</td></tr>
-    <tr><td><b>體力要求</b></td><td>中等（9.8km，部分上坡）</td><td>輕鬆–中等</td><td>輕鬆（全纜車）</td></tr>
     <tr><td><b>最佳天氣</b></td><td>晴天（湖面倒影）</td><td>晴天（Riffelsee倒影）</td><td><b>任何天氣</b>（雨天首選！）</td></tr>
     <tr><td><b>首班車</b></td><td>08:00–08:30</td><td><b>07:00</b></td><td>08:30</td></tr>
     <tr><td><b>末班下山</b></td><td>~18:00</td><td>~19:24</td><td>~16:30–17:00 ⚠️需確認</td></tr>
@@ -509,7 +439,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
 
 <!-- ===== TAB 4: 每日時程 ===== -->
 <div id="tab-daily" class="panel">
-<div class="alert alert-kiwi">🗒️ <b>標注</b>：⭐必去 | 🧊高海拔 | 🌧️雨備案 | ⚠️注意 | ⏱時間含緩衝<br>💡 山頂停留時間依個人體能調整，本表以30–45分鐘計算，已含緩衝。</div>
+<div class="alert alert-kiwi">🗒️ <b>標注</b>：⭐必去 | 🧊高海拔 | 🌧️雨備案 | ⚠️注意 | ⏱時間含緩衝<br>💡 山頂停留依個人體能調整，本表以30–45分鐘計算已含緩衝。</div>
 
 <div class="card" style="padding:12px 16px">
 
@@ -519,15 +449,15 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
   <div class="day-content">
     <div class="day-loc">🛬 蘇黎世機場 → 策馬特（抵達日）</div>
     <div class="day-desc">06:10 抵蘇黎世 → 機場 Coop 補食物 → 07:46 搭火車（Visp 轉車）→ 11:20 抵策馬特 → 飯店寄放行李 → 輕鬆老城漫步 → 晚餐 Old Zermatt 起司鍋 → 早睡。</div>
-    <div class="tags"><span class="tag tag-warn">⚠️ 飛行15h+，今天輕鬆為主！</span><span class="tag tag-warn">⏱ 明天依天氣決定行程</span></div>
+    <div class="tags"><span class="tag tag-warn">⚠️ 飛行15h+，今天輕鬆為主！</span></div>
     <div class="day-hotel">🏨 Hotel Bahnhof Zermatt（火車站對面，Gornergrat站斜對面）</div>
     <div style="margin-top:8px">
-      <div class="tl-row"><div class="tl-time">06:10</div><div class="tl-content"><div class="tl-title">抵蘇黎世機場</div><div class="tl-sub">領行李 → 機場地下層 Coop 採買 → 往地下火車站</div></div></div>
-      <div class="tl-row"><div class="tl-time">07:46</div><div class="tl-content"><div class="tl-title">🚂 蘇黎世機場 → Visp → Zermatt</div><div class="tl-sub">IC 至 Visp（約2h）→ 轉 Matterhorn Gotthard Bahn → Zermatt（約1.5h）</div></div></div>
-      <div class="tl-row"><div class="tl-time">11:20</div><div class="tl-content"><div class="tl-title">⭐ 抵達策馬特！</div><div class="tl-sub">Hotel Bahnhof 寄放行李（14:00 才能 check-in）</div></div></div>
+      <div class="tl-row"><div class="tl-time">06:10</div><div class="tl-content"><div class="tl-title">抵蘇黎世機場 → 領行李 → 機場地下層 Coop → 往地下火車站</div></div></div>
+      <div class="tl-row"><div class="tl-time">07:46</div><div class="tl-content"><div class="tl-title">🚂 蘇黎世機場 → Visp（IC，約2h）→ 轉 Matterhorn Gotthard Bahn → Zermatt（約1.5h）</div></div></div>
+      <div class="tl-row"><div class="tl-time">11:20</div><div class="tl-content"><div class="tl-title">⭐ 抵達策馬特！Hotel Bahnhof 寄放行李（14:00 才能 check-in）</div></div></div>
       <div class="tl-row"><div class="tl-time">11:30</div><div class="tl-content"><div class="tl-title">老城漫步：班霍夫大街 → 蘑菇屋 → 博物館外觀</div><div class="tl-sub">順便 Coop 採買明天健行乾糧（麵包、起司、能量棒）</div></div></div>
       <div class="tl-row"><div class="tl-time">14:00</div><div class="tl-content"><div class="tl-title">飯店 check-in → 休息調時差</div></div></div>
-      <div class="tl-row"><div class="tl-time">18:30</div><div class="tl-content"><div class="tl-title">晚餐：Old Zermatt 起司鍋</div><div class="tl-sub">步行約10分，建議提前訂位！</div></div></div>
+      <div class="tl-row"><div class="tl-time">18:30</div><div class="tl-content"><div class="tl-title">晚餐：Old Zermatt 起司鍋</div><div class="tl-sub">飯店步行約10分，建議提前訂位！</div></div></div>
     </div>
   </div>
 </div>
@@ -537,32 +467,32 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
   <div class="day-badge">D2<br>6/18</div>
   <div class="day-content">
     <div class="day-loc">策馬特｜⭐ 五湖健行（晴天優先）</div>
-    <div class="day-desc">早出發搭地下纜索鐵路 → Sunnegga → Blauherd → 五湖健行（Blauherd → Stellisee → Grindjisee → Grünsee → Moosjisee → Leisee → Sunnegga），下坡為主，約4–5小時含停留拍照。</div>
+    <div class="day-desc">早出發搭地下纜索鐵路 → Sunnegga → 換纜車 → Blauherd → 五湖健行（Blauherd → Stellisee ⭐ → Grindjisee → Grünsee → Moosjisee → Leisee → Sunnegga），下坡為主，約4–5小時含拍照停留。</div>
     <div class="tags">
       <span class="tag tag-star">⭐ Stellisee 馬特洪峰倒影最美！</span>
-      <span class="tag tag-warn">⚠️ 首班纜車約08:00（6月）</span>
-      <span class="tag tag-alt">💡 重點湖：Stellisee ⭐、Grindjisee、Grünsee</span>
+      <span class="tag tag-warn">⚠️ 首班纜車約08:00</span>
+      <span class="tag tag-alt">💡 Grünsee旁廁所/廁投幣</span>
     </div>
     <div class="day-hotel">🏨 Hotel Bahnhof Zermatt</div>
-    <a href="https://twoslowbyron.com/zermatt_5seenweg/" target="_blank" class="blog-link">📖 Byron 五湖健行完整遊記</a>
+    <a href="https://twoslowbyron.com/zermatt_5seenweg/" target="_blank" class="blog-link">五湖健行完整遊記</a>
     <div style="margin-top:8px">
-      <div class="tl-row"><div class="tl-time">07:30</div><div class="tl-content"><div class="tl-title">出發前往纜索鐵路站（ZBAG-zsb，Wiestistrasse）</div><div class="tl-sub">Hotel Bahnhof 步行約8分；地下纜索鐵路約7分上Sunnegga（2,288m），4分鐘就爬升800m高度！出站後往右即是 Leisee 湖，可先拍 Matterhorn 全景。</div></div></div>
-      <div class="tl-row"><div class="tl-time">08:15</div><div class="tl-content"><div class="tl-title">Blauherd（2,571m）出發五湖健行</div><div class="tl-sub">→ Stellisee（20分，最美倒影，建議蹲低拍！）→ Grindjisee（30分，湖岸松林）→ Grünsee（20分，綠湖，廁所在此）</div></div></div>
-      <div class="tl-row"><div class="tl-time">10:30</div><div class="tl-content"><div class="tl-title">→ Moosjisee（30分）→ Leisee（45分，此段有明顯上坡！）</div><div class="tl-sub">Ze Seewjinu 小屋可休息</div></div></div>
-      <div class="tl-row"><div class="tl-time">12:30</div><div class="tl-content"><div class="tl-title">Sunnegga 搭纜索鐵路下山</div><div class="tl-sub">或可在 Sunnegga 山上餐廳午餐（CHF 18–28）</div></div></div>
+      <div class="tl-row"><div class="tl-time">07:30</div><div class="tl-content"><div class="tl-title">出發前往纜索鐵路站（Wiestistrasse，步行約8分）</div><div class="tl-sub">進地下隧道搭纜索鐵路，4.5分鐘爬升800m高度抵 Sunnegga（2,288m）。出站後往右即是 Leisee 湖，可先快拍 Matterhorn 全景。→ 再換乘8人座纜車至 Blauherd（2,571m）約8分</div></div></div>
+      <div class="tl-row"><div class="tl-time">08:15</div><div class="tl-content"><div class="tl-title">Blauherd 出發五湖健行（官方步道 Nr.11，5-Seenweg）</div><div class="tl-sub">→ Stellisee（20–30分，最美倒影！蹲低拍！）→ Grindjisee（30分，松林倒影）→ Grünsee（20分，綠湖可游泳，廁所在此）</div></div></div>
+      <div class="tl-row"><div class="tl-time">10:30</div><div class="tl-content"><div class="tl-title">→ Moosjisee（30分）→ Leisee（35–45分，此段有明顯上坡！）</div><div class="tl-sub">Ze Seewjinu 小屋（Grünsee後）可休息、買熱飲；最後一段 Moosjisee→Leisee 最陡，但距離短</div></div></div>
+      <div class="tl-row"><div class="tl-time">12:30</div><div class="tl-content"><div class="tl-title">Sunnegga 午餐或自備 → 纜索鐵路下山</div><div class="tl-sub">或選擇步行下山至 Findeln 美食村（約1小時）</div></div></div>
       <div class="tl-row"><div class="tl-time">14:00</div><div class="tl-content"><div class="tl-title">回飯店休息 → 晚餐自煮或外食</div></div></div>
-      <div class="tl-row"><div class="tl-time">16:00–18:00</div><div class="tl-content"><div class="tl-title">可選：Gorner Gorge 峽谷步道（步行35分，免費）</div></div></div>
     </div>
-    <div class="alert alert-amber" style="margin-top:8px;font-size:12px">⚠️ <b>注意事項</b>：6月初可能仍有積雪殘留（Moosjisee→Leisee 段），出發前確認步道開放狀態。<br>🔗 <a href="https://zermatt.swiss/en/map" target="_blank" style="color:#7d6608">zermatt.swiss 即時步道狀態</a>｜官方步道編號：<b>Nr. 11（5 Seenweg）</b></div>
     <div class="day-activity">
       <div class="day-activity-title">⚡ D2 活動機會：馬特洪峰滑翔傘</div>
-      五湖健行結束約13:00下山，下午14:00–16:00是滑翔傘黃金時段！<br>
-      → <b>Matterhorn Paragliding</b>（Bahnhofstrasse 19，Glacier Sport Shop 地下），開放至19:00報名當天班次或提前預約。<br>
-      → 飛行20–25分，CHF 180–220/人，+CHF 40 可加購 GoPro 影片。
+      健行結束約13:00下山，下午14:00–16:00是滑翔傘黃金時段！<br>
+      → <b>Matterhorn Paragliding</b>（Bahnhofstrasse 19，Glacier Sport Shop 地下），開放至19:00。CHF 180–220/人，+CHF 40 加購 GoPro 影片。
     </div>
     <div class="day-rain">
-      <div class="day-rain-title">🌧️ D2 雨天備案：馬特洪峰冰川天堂</div>
-      詳見 D4 冰川天堂備案說明（時程完全相同，若D2執行則D4改為直接移動）
+      <div class="day-rain-title">🌧️ D2 雨天備案：馬特洪峰冰川天堂（見D4備案說明）</div>
+      若D2天氣不佳，今天改執行冰川天堂（時程見D4方案B）；D4移動日則直接搭09:00火車前往茵特拉肯。
+    </div>
+    <div class="hike-warn" style="margin-top:8px;font-size:12px">
+      ⚠️ 6月初可能仍有積雪（Moosjisee→Leisee段），出發前確認步道開放狀態：<a href="https://zermatt.swiss/en/map" target="_blank" style="color:#7d6608">zermatt.swiss 步道狀態</a>
     </div>
   </div>
 </div>
@@ -572,39 +502,38 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
   <div class="day-badge">D3<br>6/19</div>
   <div class="day-content">
     <div class="day-loc">策馬特｜⭐ Gornergrat + Riffelsee 健行（晴天優先）</div>
-    <div class="day-desc">早班搭 Gornergrat Bahn → 山頂（3,089m）觀景 → 搭一站火車至 Rotenboden → 步行至 Riffelsee 拍倒影 → 健行下 Riffelberg → 下午返策馬特。</div>
+    <div class="day-desc">早班搭 Gornergrat Bahn（右邊座位看馬特洪峰）→ 山頂（3,089m）觀景 → 搭一站至 Rotenboden → 步行至 Riffelsee 拍倒影 → 健行下 Riffelberg → 下午返策馬特。</div>
     <div class="tags">
       <span class="tag tag-star">⭐ Riffelsee 馬特洪峰倒影！</span>
       <span class="tag tag-warn">⚠️ 早班人少，07:00 出發最佳</span>
       <span class="tag tag-cold">🧊 山頂3,089m，帶薄外套</span>
     </div>
     <div class="day-hotel">🏨 Hotel Bahnhof Zermatt</div>
-    <a href="https://twoslowbyron.com/gornergrat/" target="_blank" class="blog-link">📖 Byron Gornergrat 完整遊記</a>
+    <a href="https://twoslowbyron.com/gornergrat/" target="_blank" class="blog-link">Gornergrat 完整遊記</a>
     <div style="margin-top:8px">
-      <div class="tl-row"><div class="tl-time">07:00</div><div class="tl-content"><div class="tl-title">🚂 Zermatt 搭 Gornergrat Bahn 首班（每24分一班）</div><div class="tl-sub">坐右邊看馬特洪峰，33分抵山頂。全票 CHF 132，半價卡 CHF 66</div></div></div>
-      <div class="tl-row"><div class="tl-time">07:35</div><div class="tl-content"><div class="tl-title">🧊 Gornergrat（3,089m）觀景台</div><div class="tl-sub">ZOOOM the Matterhorn 互動展（含票）→ 360° 觀景台 → 28座四千米峰 + 高納冰河全景。停留約30–40分</div></div></div>
-      <div class="tl-row"><div class="tl-time">08:20</div><div class="tl-content"><div class="tl-title">搭火車一站 → Rotenboden（2,815m）下車</div><div class="tl-sub">步行5–10分到 Riffelsee</div></div></div>
-      <div class="tl-row"><div class="tl-time">08:40</div><div class="tl-content"><div class="tl-title">⭐ Riffelsee（2,757m）拍馬特洪峰倒影！</div><div class="tl-sub">無風晴天倒影近乎完美；早晨光線從東邊來最佳；蹲低或趴下拍效果更好！湖遠端角度最完整。</div></div></div>
-      <div class="tl-row"><div class="tl-time">09:30</div><div class="tl-content"><div class="tl-title">健行：Riffelsee → Riffelberg（約30–45分，下坡）</div><div class="tl-sub">全程眺望馬特洪峰，步道清楚，白紅白標誌（中級難度）</div></div></div>
-      <div class="tl-row"><div class="tl-time">10:15</div><div class="tl-content"><div class="tl-title">Riffelberg（2,582m）休息 &amp; 自備午餐（40分）</div><div class="tl-sub">有露天觀景餐廳（CHF 25–35），馬特洪峰正面景觀。</div></div></div>
+      <div class="tl-row"><div class="tl-time">07:00</div><div class="tl-content"><div class="tl-title">🚂 Zermatt GGB 首班（每24分一班，坐右邊看馬特洪峰）</div><div class="tl-sub">全票 CHF 132，半價卡 CHF 66；可選 Priority Boarding（+CHF 7）提早3分登車</div></div></div>
+      <div class="tl-row"><div class="tl-time">07:35</div><div class="tl-content"><div class="tl-title">🧊 Gornergrat（3,089m）觀景台</div><div class="tl-sub">ZOOOM the Matterhorn 互動展（含票）→ 360°觀景台 → 28座四千米峰 + 高納冰河全景。停留30–40分</div></div></div>
+      <div class="tl-row"><div class="tl-time">08:20</div><div class="tl-content"><div class="tl-title">搭火車一站 → Rotenboden（2,815m）下車 → 步行5–10分至 Riffelsee</div></div></div>
+      <div class="tl-row"><div class="tl-time">08:40</div><div class="tl-content"><div class="tl-title">⭐ Riffelsee（2,757m）拍馬特洪峰倒影！</div><div class="tl-sub">無風晴天倒影近乎完美，早晨光線從東邊來最佳；繞到湖遠端正面角度最好；蹲低或趴下拍效果更佳！</div></div></div>
+      <div class="tl-row"><div class="tl-time">09:30</div><div class="tl-content"><div class="tl-title">健行：Riffelsee → Riffelberg（約30–45分，下坡，白紅白標誌）</div></div></div>
+      <div class="tl-row"><div class="tl-time">10:15</div><div class="tl-content"><div class="tl-title">Riffelberg（2,582m）休息 &amp; 午餐</div><div class="tl-sub">露天觀景餐廳（CHF 25–35，面向馬特洪峰）或自備；搭 Gornergrat Bahn 下山</div></div></div>
     </div>
-    <div class="day-activity">
-      <div class="day-activity-title">⚡ D3 下午兩方案（選一）</div>
-      <div class="ab-wrap">
-        <div class="ab-card ab-a">
-          <div class="ab-title">🅰️ 方案A：馬特洪峰滑翔傘</div>
-        </div>
-        <div class="ab-card ab-b">
-          <div class="ab-title">🅱️ 方案B：冰川天堂（若D2未執行）</div>
-          11:00 Riffelberg 搭纜車 → Furi → 11:30 Furi 站 → 搭 Matterhorn Express → 12:00 Trockener Steg 短暫適應高度 → 12:10 抵頂 Matterhorn Glacier Paradise（3,883m）<br>
-          Sphinx 觀景台 + 冰宮 + Cinema Lounge → 14:30 開始下山 → 15:30 抵 Zermatt<br>
-          ⚠️ 全程最少需2.5小時，須於14:00前開始下山！
-        </div>
+    <div class="hike-warn" style="font-size:12px;margin-top:8px">
+      ⚠️ <b>天氣備案</b>：若 Riffelsee 因雲/風無法拍倒影，Gornergrat 山頂 ZOOOM 互動展本身已非常值得。真正大霧天 → 切換至冰川天堂（天堂站通常在雲層上方）。出發前查 MeteoSwiss App 3,800m 高度天氣。<br>
+      🔗 <a href="https://www.gornergrat.ch/en/pages/timetable-gornergrat-bahn" target="_blank" style="color:#7d6608">Gornergrat 官方時刻表</a>
+    </div>
+
+    <!-- D3 下午方案：獨立呈現（不用 ab-wrap 包裹） -->
+    <div style="margin-top:12px">
+      <div style="font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:8px">🌞 D3 下午方案（選一，視精力而定）</div>
+      <div class="ab-card ab-a" style="margin-bottom:8px">
+        <div class="ab-title">🅰️ 馬特洪峰滑翔傘（CHF 180–220）</div>
+        Riffelberg 約11:00下山回策馬特，下午14:00–16:00前往 Matterhorn Paragliding 辦公室（Bahnhofstrasse 19）報名當天班次，與馬特洪峰面對面飛翔20–25分，人生難忘體驗。
       </div>
-    </div>
-    <div class="hike-warn" style="margin-top:8px;font-size:12px">
-      ⚠️ <b>天氣備案</b>：若 Riffelsee 因雲/風無法拍倒影，Gornergrat 山頂360°全景和 ZOOOM 互動展本身已非常值得。真正大霧天 → 切換至冰川天堂（天堂站通常在雲層上方）。出發前查 MeteoSwiss App 3,800m 高度天氣預報。<br>
-      🔗 <a href="https://www.gornergrat.ch/en/pages/timetable-gornergrat-bahn" target="_blank" style="color:#7d6608">Gornergrat 官方時刻表</a>（每年4月更新）
+      <div class="ab-card ab-b">
+        <div class="ab-title">🅱️ 冰川天堂（若D2未執行，CHF 92）</div>
+        約11:00從 Riffelberg 搭纜車至 Furi → 換乘 Matterhorn Express → 12:00–12:30 Trockener Steg 適應高度 → 抵頂 Klein Matterhorn（3,883m）→ Sphinx觀景台 + 冰宮 + Cinema → <b>14:00前開始下山</b>，15:30回 Zermatt。⚠️ 末班纜車約16:30–17:00，當天確認！
+      </div>
     </div>
   </div>
 </div>
@@ -614,34 +543,31 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
   <div class="day-badge">D4<br>6/20</div>
   <div class="day-content">
     <div class="day-loc">策馬特 → 茵特拉肯（移動日）</div>
-    <div class="day-desc">依 D2/D3 天氣狀況決定兩方案：A方案直接移動；B方案先執行冰川天堂再移動。</div>
-    <div class="tags"><span class="tag tag-warn">⏱ 移動日，火車約2h15m含轉車</span></div>
+    <div class="day-desc">依 D2/D3 天氣狀況決定兩方案。</div>
+    <div class="tags"><span class="tag tag-warn">⏱ 移動，火車約2h15m含轉車</span></div>
     <div class="day-hotel">🏨 Villa Sonnenhof（含早餐）</div>
     <div class="ab-wrap" style="margin-top:10px">
       <div class="ab-card ab-a">
         <div class="ab-title">🅰️ 方案A：直接移動茵特拉肯</div>
-        <b>適合</b>：D2/D3 均天氣好，三大景點已全部完成<br><br>
+        <b>適合</b>：D2/D3 均天氣好，三大景點已完成<br><br>
         08:30 退房 → 09:00 搭火車（Visp → Spiez → Interlaken Ost）<br>
-        11:15–11:30 抵因特拉肯 → 放行李 → 下午輕鬆<br>
+        11:15 抵因特拉肯 → 放行李<br>
         14:00 Höhematte 公園 → 阿勒河 → Hoheweg 購物街<br>
         19:00 晚餐 → 早睡（明天少女峰！）
       </div>
       <div class="ab-card ab-b">
         <div class="ab-title">🅱️ 方案B：冰川天堂 → 再移動</div>
-        <b>適合</b>：D2/D3 未能執行冰川天堂（雨天備案未用）<br><br>
-        07:00 退房 → 行李寄存火車站 → 07:30 步行至 Matterhorn Express 谷站<br>
-        08:30 上山 → 09:15 抵頂（3,883m）Sphinx觀景台 + 冰宮 + Cinema（停約1–1.5h）<br>
-        10:30 開始下山 → 可在 Trockener Steg 或 Schwarzsee 下車拍 ZERMATT 地標<br>
+        <b>適合</b>：D2/D3 均未執行冰川天堂<br><br>
+        07:00 退房 + 行李寄存火車站 → 08:30 上山<br>
+        09:15 抵頂（3,883m）Sphinx觀景台+冰宮+Cinema（停約1–1.5h）<br>
+        10:30 下山 → Trockener Steg 或 Schwarzsee 短停<br>
         12:00 抵 Zermatt → 取行李 → 13:00 搭火車往茵特拉肯<br>
-        15:15 抵因特拉肯 → 放行李 → 短暫休息
+        15:15 抵因特拉肯 → 入住休息
       </div>
     </div>
     <div class="hike-warn" style="margin-top:8px;font-size:12px">
-      ⚠️ <b>方案B 冰川天堂重要提醒</b>：<br>
-      • <b>末班下山纜車務必確認</b>：約16:30–17:00，旺季延至18:30，當天在谷站看告示牌。<br>
-      • 3,883m 是全程最高點！上去後慢慢移動、多喝水，有嚴重頭痛噁心即下山。<br>
-      • 若要搭13:00 後火車，確保 12:00 前已回到 Zermatt。<br>
-      🔗 <a href="https://www.matterhornparadise.ch/en/information/operating-hours/lifts-and-pistes" target="_blank" style="color:#7d6608">官方即時纜車狀態</a>
+      ⚠️ 方案B：末班下山纜車約16:30–17:00，旺季18:30，<b>當天在谷站確認</b>。3,883m是全程最高點，有嚴重頭痛噁心立即下山。<br>
+      🔗 <a href="https://www.matterhornparadise.ch/en/information/operating-hours/lifts-and-pistes" target="_blank" style="color:#7d6608">冰川天堂即時纜車狀態</a>
     </div>
   </div>
 </div>
@@ -651,25 +577,58 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
   <div class="day-badge">D5<br>6/21</div>
   <div class="day-content">
     <div class="day-loc">茵特拉肯｜⭐ 少女峰（Jungfraujoch，3,454m）</div>
-    <div class="day-desc"><b>今天只做少女峰</b>。Villa Sonnenhof 飽吃早餐後出發。Interlaken Ost → Grindelwald Terminal → Eiger Express 纜車 → Eigergletscher → Jungfraubahn → Jungfraujoch → 山頂約1–2h → 下山可在 Kleine Scheidegg 健行（可選）。</div>
+    <div class="day-desc"><b>今天只做少女峰</b>。Villa Sonnenhof 飽吃早餐後出發。</div>
     <div class="tags">
       <span class="tag tag-star">⭐ 歐洲最高火車站！</span>
-      <span class="tag tag-warn">⚠️ 提前預訂座位！CHF 10，5–10月強制</span>
+      <span class="tag tag-warn">⚠️ 座位預訂強制（CHF 10）！現場旺季排隊達1小時</span>
       <span class="tag tag-cold">🧊 山頂0°C，帶最厚外套</span>
       <span class="tag tag-warn">⏱ 全程7–8小時，不要再加行程</span>
     </div>
     <div class="day-hotel">🏨 Villa Sonnenhof</div>
+    <a href="https://twoslowbyron.com/jungfraujoch/" target="_blank" class="blog-link">少女峰觀景台完整攻略</a>
+    <a href="https://twoslowbyron.com/jungfrau_ticket/" target="_blank" class="blog-link">2026票價與交通全攻略</a>
+    <a href="https://twoslowbyron.com/jungfrau_eiger_walk/" target="_blank" class="blog-link">Eiger Trail 健行攻略</a>
+    <a href="https://www.bring-you.info/zh-tw/kleine-scheiddeg" target="_blank" class="blog-link">Kleine Scheidegg 攻略</a>
     <div style="margin-top:8px">
       <div class="tl-row"><div class="tl-time">07:00</div><div class="tl-content"><div class="tl-title">Villa Sonnenhof 豐盛早餐（帶保溫瓶 + 自備泡麵！）</div></div></div>
-      <div class="tl-row"><div class="tl-time">08:00</div><div class="tl-content"><div class="tl-title">🚂 Interlaken Ost → Grindelwald Terminal（約30分）</div><div class="tl-sub">Eiger Express 纜車→ Eigergletscher（15分）→ Jungfraubahn → Jungfraujoch（26分）</div></div></div>
-      <div class="tl-row"><div class="tl-time">09:30</div><div class="tl-content"><div class="tl-title">🧊 Jungfraujoch（3,454m）！</div><div class="tl-sub">Sphinx 觀景台 → 冰宮 → 雪地廣場。停留1–2h</div></div></div>
-      <div class="tl-row"><div class="tl-time">11:00</div><div class="tl-content"><div class="tl-title">自備泡麵午餐（可向工作人員要熱水！）</div><div class="tl-sub">省 CHF 20–30 vs 山頂餐廳</div></div></div>
-      <div class="tl-row"><div class="tl-time">12:00</div><div class="tl-content"><div class="tl-title">下山至 Kleine Scheidegg</div><div class="tl-sub"><b>方案A</b>：直接搭車回因特拉肯（約15:00回）<br><b>方案B</b>：Eiger Trail 健行（Alpiglen，約2h，再搭車）</div></div></div>
-      <div class="tl-row"><div class="tl-time">15:30</div><div class="tl-content"><div class="tl-title">回茵特拉肯休息</div></div></div>
+      <div class="tl-row"><div class="tl-time">08:00</div><div class="tl-content"><div class="tl-title">🚂 Interlaken Ost → Grindelwald（約30分）</div><div class="tl-sub">→ 步行或公車至 Grindelwald Terminal → 搭 <b>Eiger Express 纜車</b>（15分）→ 抵 <b>Eigergletscher（2,320m）</b><br>⚠️ Eigergletscher 先排隊！洗手間在此，高山症輕微症狀可先在這裡適應10分鐘</div></div></div>
+      <div class="tl-row"><div class="tl-time">09:00</div><div class="tl-content"><div class="tl-title">→ 轉 <b>Jungfrau Railway</b>（少女峰鐵路，26分）→ 抵 Jungfraujoch（3,454m）</div></div></div>
+      <div class="tl-row"><div class="tl-time">09:30</div><div class="tl-content"><div class="tl-title">🧊 Jungfraujoch 山頂！（停留2小時）</div><div class="tl-sub">
+        <b>4. Sphinx觀景台</b>（電梯上，360°）→ <b>8. Ice Palace 冰宮</b>（冰雕藝廊，0°C，約20分）→ <b>9. Plateau 瑞士國旗廣場</b>（雪地，熱門拍照點！）→ 雪上活動體驗（甜甜圈滑行等）
+      </div></div></div>
+      <div class="tl-row"><div class="tl-time">11:30</div><div class="tl-content"><div class="tl-title">自備泡麵午餐（向工作人員要熱水，省CHF 20–30）</div></div></div>
+      <div class="tl-row"><div class="tl-time">12:00</div><div class="tl-content"><div class="tl-title">搭 Jungfrau Railway 下山至 Kleine Scheidegg（小夏戴克）</div></div></div>
+    </div>
+
+    <div class="ab-wrap" style="margin-top:8px">
+      <div class="ab-card ab-a">
+        <div class="ab-title">🅰️ 方案A：直接搭車回因特拉肯</div>
+        Kleine Scheidegg → 搭火車至 Grindelwald Terminal → 換 Eiger Express 纜車 → Grindelwald → 搭火車至 Interlaken Ost<br>
+        <b>全程約1.5–2小時，15:00–15:30回因特拉肯</b><br><br>
+        適合：體力已用完，或天氣轉差的情況。
+      </div>
+      <div class="ab-card ab-b">
+        <div class="ab-title">🅱️ 方案B：健行下山至 Lauterbrunnen（瀑布鎮）</div>
+        Kleine Scheidegg → <b>健行至 Wengernalp 站</b>（約40分，下坡，遠望艾格北壁）→ 搭 WAB 火車至 <b>Wengen</b>（可短暫晃晃）→ 繼續搭火車至 <b>Lauterbrunnen 瀑布鎮</b><br>
+        🌊 瀑布鎮：<b>Staubbachfall 施陶瀑布</b>（免費，300m落差）+ <b>Trümmelbach Falls</b> 特呂默爾巴赫洞穴瀑布（CHF 16，地下洞穴，電梯進入，震撼！）<br>
+        Lauterbrunnen → 搭火車回 Interlaken Ost（約20分）<br>
+        <b>全程約3.5–4小時，16:30–17:00回因特拉肯</b><br><br>
+        適合：體力充沛、想一次包含瀑布鎮。
+      </div>
+    </div>
+    <div class="hike-tip" style="margin-top:8px;font-size:12px">
+      💡 <a href="https://christabelle.idv.tw/archives/9549" target="_blank" style="color:var(--kiwi-dark)">少女峰→Kleine Scheidegg→Lauterbrunnen路線參考遊記</a>
+    </div>
+    <div class="hike-warn" style="font-size:12px;margin-top:6px">
+      ⚠️ <b>重要提醒</b>：少女峰登山列車 5–10月<b>強制座位預訂</b>（CHF 10/人），旺季現場排隊可達30分鐘至1小時！務必提前在 jungfrau.ch 預訂，否則可能無法搭上想要的班次。建議出發前2–4週訂位。
     </div>
     <div class="day-rain">
-      <div class="day-rain-title">🌧️ D5 雨天備案：Grindelwald First + Cliff Walk</div>
-      First（2,168m）纜車上山，Cliff Walk 玻璃棧道（免費），可加購 First Flyer（CHF 31）。比少女峰便宜且雨天氛圍不差。若改期，D6 天氣好改做少女峰。
+      <div class="day-rain-title">🌧️ D5 雨天備案：Grindelwald First Adventure</div>
+      <a href="https://twoslowbyron.com/grindelwald-first/" target="_blank" class="blog-link">Grindelwald First 完整攻略</a><br><br>
+      從 Interlaken Ost → 搭 BOB 火車至 Grindelwald（約30分，STP免費）→ 步行10分到 Firstbahn 纜車站 → 搭纜車至 First（2,168m，約25分，半價卡50%折，CHF ~30）<br><br>
+      <b>建議組合</b>（4–5小時）：<b>① Cliff Walk</b>（懸空玻璃棧道，免費，20分，必走！）→ <b>② First Flyer</b>（排隊+搭，CHF 31，84km/h！務必早上開放就去排）→ <b>③ Bachalpsee 湖健行</b>（60分來回，高山湖泊倒映Finsteraarhorn，輕鬆平坦）→ 午餐山頂餐廳 → 纜車下山<br><br>
+      ⚠️ First Flyer 操作時間 11:00–15:30，務必早到排隊，下午等待可達1–2小時！<br>
+      若D5雨備，D6改為少女峰（天氣好的那天）。
     </div>
   </div>
 </div>
@@ -678,22 +637,25 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
 <div class="day-item">
   <div class="day-badge">D6<br>6/22</div>
   <div class="day-content">
-    <div class="day-loc">茵特拉肯｜布里恩茨湖 + 聖貝亞圖斯洞穴（A/B兩方案）</div>
+    <div class="day-loc">茵特拉肯｜布里恩茨湖遊船 + 哈德昆 + 聖貝亞圖斯洞穴（A方案）</div>
     <div class="tags">
-      <span class="tag tag-star">⭐ 兩方案各有精彩</span>
-      <span class="tag tag-rain">🌧️ 天氣不好優先洞穴</span>
+      <span class="tag tag-star">⭐ 兩湖景色壯闊</span>
+      <span class="tag tag-rain">🌧️ 洞穴地下不受天氣影響</span>
     </div>
     <div class="day-hotel">🏨 Villa Sonnenhof</div>
     <div class="ab-wrap">
       <div class="ab-card ab-a">
-        <div class="ab-title">🅰️ 方案A：布里恩茨湖遊船 + 洞穴</div>
-        09:00 Interlaken Ost 碼頭搭船（靠右坐）→ 10:15 抵 Brienz 木雕逛街 → 13:00 午餐 → 14:00 搭21號公車至聖貝亞圖斯洞穴（20分）→ 洞穴1.5h → 17:00 搭船回 Interlaken West<br><br>
-        <b>適合</b>：天氣好，想賞湖景優先
+        <div class="ab-title">🅰️ 方案A：布里恩茨湖遊船 + 哈德昆 + 洞穴（推薦）</div>
+        ☀️ <b>上午</b>：Interlaken Ost 碼頭搭船（靠右坐，Swiss Travel Pass 免費）→ 約75分鐘抵終點站 <b>Brienz</b>（布里恩茲，木雕工藝小鎮）→ 參觀後搭<b>火車回 Interlaken Ost</b>（約30分，較快）<br><br>
+        🚡 <b>中午</b>：回到 Ost 站後，步行約7分鐘到 Harderbahn 纜車站（Interlaken 地圖可見）→ 搭纜車上 <b>Harder Kulm（1,322m）</b> 哈德昆觀景台 → 俯瞰兩湖+三山全景，360°無敵！→ 午餐可在此山頂餐廳（CHF 25–35），或先下山再吃<br><br>
+        🦇 <b>下午</b>：從 Interlaken Ost 搭 <b>21號公車</b>（約20分）→ 在 <b>Beatushöhlen 站</b>下車 → <b>聖貝亞圖斯洞穴（St. Beatus Caves）</b>（CHF 26，地下洞穴+瀑布，自導式約1–1.5小時）→ 洞前即是 <b>圖恩湖（Thunersee）</b>畔<br><br>
+        🚢 <b>傍晚</b>：結束後可選擇搭 <b>圖恩湖遊船</b>回 <b>Interlaken West 站</b>碼頭（約30分，Swiss Travel Pass 免費），沿途欣賞圖恩湖山景
       </div>
       <div class="ab-card ab-b">
-        <div class="ab-title">🅱️ 方案B：⚡ Grindelwald First Adventure</div>
-        08:30 Ost → 09:00 Grindelwald → Firstbahn 纜車上山 → <b>Cliff Walk</b>（免費）→ <b>First Flyer</b>（84km/h！CHF 31）→ Bachalpsee 健行（1h來回）→ 午餐山頂 → 纜車下山 → 16:00 回因特拉肯<br><br>
-        <b>費用</b>：纜車 CHF 30（半價）+ First Flyer CHF 31 ≈ CHF 61/人
+        <div class="ab-title">🅱️ 方案B：⚡ Grindelwald First Adventure（若D5未執行）</div>
+        Interlaken Ost → Grindelwald → Firstbahn 纜車上山 → <b>Cliff Walk</b>（免費）→ <b>First Flyer</b>（CHF 31，84km/h！早上去排）→ Bachalpsee 健行（1h）→ 午餐山頂 → 纜車下山 → 16:00 回因特拉肯<br><br>
+        費用：纜車 CHF 30（半價）+ First Flyer CHF 31 ≈ CHF 61/人<br>
+        適合：D5因天氣改期，今天才執行 Grindelwald First 活動。
       </div>
     </div>
   </div>
@@ -704,17 +666,14 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
   <div class="day-badge">D7<br>6/23</div>
   <div class="day-content">
     <div class="day-loc">茵特拉肯 → 琉森（移動 + 城區散步）</div>
-    <div class="day-desc">上午輕鬆：日本庭園 → 城堡外觀 → 午後搭 <b>Luzern-Interlaken Express</b>（美景直達列車，靠右坐看布里恩茨湖）→ 傍晚城區散步：卡貝爾橋 → 垂死獅子像。</div>
-    <div class="tags">
-      <span class="tag tag-star">⭐ Luzern-Interlaken Express 絕景列車</span>
-      <span class="tag tag-warn">⏱ 靠右坐！欣賞布里恩茨湖和薩爾嫩湖</span>
-    </div>
+    <div class="day-desc">上午輕鬆：日本庭園、城堡外觀 → 午後搭 <b>Luzern-Interlaken Express</b>（靠右坐看布里恩茨湖）→ 傍晚城區散步：卡貝爾橋 → 垂死獅子像。</div>
+    <div class="tags"><span class="tag tag-star">⭐ Luzern-Interlaken Express 絕景直達列車</span></div>
     <div class="day-hotel">🏨 Hotel Alpha, Garni（火車站步行12分）</div>
     <div style="margin-top:8px">
-      <div class="tl-row"><div class="tl-time">09:00</div><div class="tl-content"><div class="tl-title">Japanischer Garten 日本庭園（免費）</div></div></div>
+      <div class="tl-row"><div class="tl-time">09:00</div><div class="tl-content"><div class="tl-title">Japanischer Garten 日本庭園（免費，步行可達）</div></div></div>
       <div class="tl-row"><div class="tl-time">10:30</div><div class="tl-content"><div class="tl-title">退房 → Interlaken Ost</div></div></div>
-      <div class="tl-row"><div class="tl-time">11:04</div><div class="tl-content"><div class="tl-title">🚂 Luzern-Interlaken Express 出發（直達，每小時一班）</div><div class="tl-sub">靠右座位，途經布里恩茨湖 → 薩爾嫩湖 → 盧塞恩湖，1h51m</div></div></div>
-      <div class="tl-row"><div class="tl-time">12:55</div><div class="tl-content"><div class="tl-title">抵達琉森，步行或公車到 Hotel Alpha</div></div></div>
+      <div class="tl-row"><div class="tl-time">11:04</div><div class="tl-content"><div class="tl-title">🚂 Luzern-Interlaken Express（直達，每小時一班）</div><div class="tl-sub">靠右邊座位，途經布里恩茨湖→薩爾嫩湖→盧塞恩湖，1h51m</div></div></div>
+      <div class="tl-row"><div class="tl-time">12:55</div><div class="tl-content"><div class="tl-title">抵琉森 → 步行或公車到 Hotel Alpha</div></div></div>
       <div class="tl-row"><div class="tl-time">14:30</div><div class="tl-content"><div class="tl-title">⭐ 卡貝爾橋 → 水塔 → 古城廣場</div></div></div>
       <div class="tl-row"><div class="tl-time">16:00</div><div class="tl-content"><div class="tl-title">垂死獅子像 → 穆塞格城牆</div></div></div>
       <div class="tl-row"><div class="tl-time">18:30</div><div class="tl-content"><div class="tl-title">晚餐：Coop / Migros 買熟食或餐廳</div></div></div>
@@ -727,7 +686,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
   <div class="day-badge">D8<br>6/24</div>
   <div class="day-content">
     <div class="day-loc">琉森｜⭐ 皮拉圖斯山金色環遊</div>
-    <div class="day-desc">⭐ 汽船 → 世界最陡齒軌（Alpnachstad → Pilatus Kulm）→ 全景纜車下山（Pilatus → Fräkmüntegg → Kriens）→ 公車回琉森。</div>
+    <div class="day-desc">⭐ 汽船 → 世界最陡齒軌（Alpnachstad→Pilatus Kulm）→ 全景纜車下山（Pilatus→Fräkmüntegg→Kriens）→ 公車回琉森。</div>
     <div class="tags">
       <span class="tag tag-star">⭐ 48度！世界最陡齒軌登山火車</span>
       <span class="tag tag-warn">⚠️ 齒軌約17:00後停駛，14:30前務必下山</span>
@@ -735,17 +694,17 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
     </div>
     <div class="day-hotel">🏨 Hotel Alpha, Garni（琉森）</div>
     <div style="margin-top:8px">
-      <div class="tl-row"><div class="tl-time">08:35</div><div class="tl-content"><div class="tl-title">🚢 琉森碼頭搭汽船 → Alpnachstad（約90分）</div><div class="tl-sub">Swiss Travel Pass 含船票。右邊座位看皮拉圖斯山。</div></div></div>
-      <div class="tl-row"><div class="tl-time">10:05</div><div class="tl-content"><div class="tl-title">🚂 Alpnachstad 搭48度齒軌列車上山（30分）</div><div class="tl-sub">半價卡50%折。世界最陡齒軌，座椅特殊設計！</div></div></div>
+      <div class="tl-row"><div class="tl-time">08:35</div><div class="tl-content"><div class="tl-title">🚢 琉森碼頭（Bahnhofquai）搭汽船 → Alpnachstad（約90分）</div><div class="tl-sub">Swiss Travel Pass 含船票！靠右坐看皮拉圖斯山。</div></div></div>
+      <div class="tl-row"><div class="tl-time">10:05</div><div class="tl-content"><div class="tl-title">🚂 Alpnachstad 搭48度齒軌列車上山（30分）</div><div class="tl-sub">半價卡50%折。世界最陡齒軌，座椅特殊設計防傾斜！</div></div></div>
       <div class="tl-row"><div class="tl-time">10:40</div><div class="tl-content"><div class="tl-title">🧊 Pilatus Kulm（2,132m）觀景台 → 龍雕像</div><div class="tl-sub">停留約1–1.5h</div></div></div>
       <div class="tl-row"><div class="tl-time">12:00</div><div class="tl-content"><div class="tl-title">山頂午餐（或自備）→ 12:30出發下山</div></div></div>
-      <div class="tl-row"><div class="tl-time">12:30</div><div class="tl-content"><div class="tl-title">🚡 全景纜車下山（Pilatus → Fräkmüntegg → Kriens）</div><div class="tl-sub">Fräkmüntegg 中途站可停留玩 Dragon Ride 夏季滑道（CHF 8–12，約15分）！</div></div></div>
+      <div class="tl-row"><div class="tl-time">12:30</div><div class="tl-content"><div class="tl-title">🚡 全景纜車下山（Pilatus Kulm → Fräkmüntegg → Kriens）</div><div class="tl-sub">最壯觀段：Pilatus→Fräkmüntegg，幾乎垂直感！<br>⚡ <b>Fräkmüntegg 停留</b>：Dragon Ride 夏季滑道（Alpine Coaster，CHF 8–12，約15分，強烈順道推薦！）</div></div></div>
       <div class="tl-row"><div class="tl-time">14:00</div><div class="tl-content"><div class="tl-title">搭1號公車回琉森市區（約25分）</div></div></div>
-      <div class="tl-row"><div class="tl-time">15:30</div><div class="tl-content"><div class="tl-title">聖萊奧德伽爾教堂 / 湖畔補拍</div></div></div>
+      <div class="tl-row"><div class="tl-time">15:30</div><div class="tl-content"><div class="tl-title">聖萊奧德伽爾教堂 / 琉森湖畔補拍</div></div></div>
     </div>
     <div class="day-rain">
       <div class="day-rain-title">🌧️ D8 皮拉圖斯雨天</div>
-      雲霧中的皮拉圖斯仍值得，纜車體驗精彩。若完全大雨放棄山：Rosengart Collection（克利+畢卡索，CHF 20）→ 琉森大教堂 → 下午移蘇黎世，多一點時間在蘇黎世市區。
+      雲霧中皮拉圖斯仍值得，纜車體驗精彩。若完全大雨：Rosengart Collection（克利+畢卡索，CHF 20）→ 下午移蘇黎世，多一點市區時間。
     </div>
   </div>
 </div>
@@ -761,8 +720,8 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
     <div style="margin-top:8px">
       <div class="tl-row"><div class="tl-time">08:30</div><div class="tl-content"><div class="tl-title">退房 → 行李寄存琉森火車站（CHF 6–9/件）</div></div></div>
       <div class="tl-row"><div class="tl-time">09:05</div><div class="tl-content"><div class="tl-title">🚂 琉森 → 蘇黎世 HB（約50分）</div></div></div>
-      <div class="tl-row"><div class="tl-time">10:00</div><div class="tl-content"><div class="tl-title">🍫 Lindt Home of Chocolate（Klook 提前買票）</div><div class="tl-sub">搭161/165號公車約20分，建議2小時</div></div></div>
-      <div class="tl-row"><div class="tl-time">12:30</div><div class="tl-content"><div class="tl-title">回市區 → 班霍夫大街午餐</div></div></div>
+      <div class="tl-row"><div class="tl-time">10:00</div><div class="tl-content"><div class="tl-title">🍫 Lindt Home of Chocolate（Klook 提前買票）</div><div class="tl-sub">搭161/165號公車約20分，建議2小時，含CHF 10消費券</div></div></div>
+      <div class="tl-row"><div class="tl-time">12:30</div><div class="tl-content"><div class="tl-title">回市區 → 班霍夫大街午餐（Zeughauskeller 推薦）</div></div></div>
       <div class="tl-row"><div class="tl-time">14:00</div><div class="tl-content"><div class="tl-title">市區快攻：林登霍夫山 → 聖彼得教堂 → 蘇黎世湖</div></div></div>
       <div class="tl-row"><div class="tl-time">17:00</div><div class="tl-content"><div class="tl-title">蘇黎世 HB 取回行李</div></div></div>
       <div class="tl-row"><div class="tl-time">17:30</div><div class="tl-content"><div class="tl-title">🚂 S-Bahn S16 至蘇黎世機場（12分）</div></div></div>
@@ -785,86 +744,103 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
 </div>
 </div>
 
-<!-- ===== TAB 5: 票卡試算（整合山岳景點票）===== -->
+<!-- ===== TAB 5: 票卡試算 ===== -->
 <div id="tab-pass" class="panel">
-<div class="alert alert-sky">💡 核心問題：本次行程跨多城市，各山岳纜車費用高，<b>購買半價卡（CHF 150）幾乎確定回本</b>。以下整合所有票務資訊，包含策馬特 Peak Pass 划算分析。</div>
+<div class="alert alert-sky">💡 核心問題：本次行程跨多城市，各山岳纜車費用高，<b>購買半價卡（CHF 150）幾乎確定回本</b>。以下整合所有票務含少女峰早安票分析。</div>
+
+<div class="sec">⭐ 少女峰早安票 Good Morning Ticket 2026 分析</div>
+<div class="ticket-box">
+  <div class="ticket-box-title">🌅 少女峰早安票（2026/5/1–10/31）</div>
+  <table class="ticket-table">
+    <tr><th>出發站</th><th>原價</th><th>半價卡 / STP 折扣後</th><th>備註</th></tr>
+    <tr><td>Interlaken Ost</td><td>CHF 175</td><td>CHF 95（半價卡）｜CHF 95（STP）</td><td>我們的出發站</td></tr>
+    <tr><td>Grindelwald / Lauterbrunnen / Wengen</td><td>CHF 165</td><td>CHF 85（半價卡/STP）</td><td>若住格林德瓦或瀑布鎮</td></tr>
+    <tr><td>Kleine Scheidegg / Eigergletscher</td><td>CHF 120</td><td>CHF 60（半價卡/STP）</td><td>較少旅客從此買</td></tr>
+    <tr class="highlight"><td><b>結論（我們：Interlaken Ost 出發）</b></td><td><b>CHF 175</b></td><td><b>CHF 95（持半價卡）</b></td><td>vs 一般半價票CHF 103，省CHF 8</td></tr>
+  </table>
+  <div style="font-size:12px;color:var(--text-muted);margin-top:8px">
+    <b>早安票限制</b>：每天僅前<b>3班</b>（約06:35、07:04、07:34 從 Interlaken Ost 出發）適用；<b>13:17前必須離開 Jungfraujoch</b>（可繼續留在 Kleine Scheidegg 不限時間）。2026年只有原價85折，<b>只適合沒有任何Pass券的遊客</b>；持半價卡者早安票CHF 95，比一般半價票（CHF 103）省CHF 8，但要犧牲一點睡眠時間早起。
+  </div>
+</div>
+
+<div class="alert alert-amber">
+  💡 <b>結論：持半價卡時，買「早安票（CHF 95）」vs「一般半價票（CHF 103）」只差 CHF 8</b>。早安票的最大優點是人較少（早班車）而非省很多錢。<b>建議</b>：若體力允許早起（07:04 車），買早安票順便避開旺季人潮；若不想那麼早，一般半價票也完全可以。<br>
+  ⚠️ <b>注意</b>：早安票請<b>出發當天</b>才購買（車站/官網），不建議提前購買，因山上天氣隨時可能取消。
+</div>
 
 <div class="sec">💳 票卡選項比較</div>
 <div class="eval-grid">
   <div class="eval-card">
     <div class="eval-icon">🎟️</div>
-    <div class="eval-title">Swiss Half Fare Card（半價卡）</div>
-    <div class="eval-desc">CHF 150 / 人，1個月有效。幾乎全部火車、巴士、遊船、大多數山岳纜車享50%折扣。最適合本次多城市+山岳行程。</div>
+    <div class="eval-title">Swiss Half Fare Card（半價卡）✅ 推薦</div>
+    <div class="eval-desc">CHF 150 / 人，1個月有效。幾乎全部火車、巴士、遊船、山岳纜車享50%折扣。最適合本次多城市+山岳行程。</div>
   </div>
   <div class="eval-card">
     <div class="eval-icon">🚂</div>
     <div class="eval-title">Swiss Travel Pass（全通）</div>
-    <div class="eval-desc">7日 CHF 418 起。火車/巴士/船免費，博物館免費。但Gornergrat、少女峰、冰川天堂仍僅5折（非免費），整體較貴。</div>
+    <div class="eval-desc">7日 CHF 418 起。火車/巴士/船免費，博物館免費。但Gornergrat、少女峰、冰川天堂仍僅5折，整體較貴。</div>
   </div>
   <div class="eval-card">
     <div class="eval-icon">🏔️</div>
     <div class="eval-title">Zermatt Peak Pass（策馬特通行證）</div>
-    <div class="eval-desc">1–4天，持半價卡享75折。覆蓋 Gornergrat + 五湖 + 冰川天堂三大路線無限搭乘。6月有售，需確認當年時間。</div>
+    <div class="eval-desc">1–4天，持半價卡享75折。覆蓋 Gornergrat + 五湖 + 冰川天堂三大路線無限搭乘。若天氣反覆、需要反覆嘗試，可考慮。</div>
   </div>
   <div class="eval-card">
-    <div class="eval-icon">🔗</div>
-    <div class="eval-title">Peak2Peak（季節限定）</div>
-    <div class="eval-desc">僅 Gornergrat + 冰川天堂，6/17後夏季版可能有售（確認官網）。不含五湖健行。適合不打算走五湖者。</div>
+    <div class="eval-icon">🎿</div>
+    <div class="eval-title">Jungfrau Travel Pass</div>
+    <div class="eval-desc">3–8日，無限搭乘茵特拉肯區火車+纜車+遊船，但登頂 Jungfraujoch 仍需額外付 CHF 89（持Pass）。若在因特拉肯待超過3天+密集玩，可考慮。</div>
   </div>
 </div>
 
-<div class="sec">🎫 策馬特三大景點票務詳細</div>
-
+<div class="sec">🎫 策馬特景點票務</div>
 <div class="ticket-box">
   <div class="ticket-box-title">🔵 五湖健行 — Sunnegga / Blauherd 纜車（2026）</div>
   <table class="ticket-table">
-    <tr><th>路段</th><th>交通方式</th><th>全票</th><th>半價卡後</th></tr>
-    <tr><td>Zermatt → Sunnegga（來回）</td><td>地下纜索鐵路</td><td>CHF ~26</td><td>CHF ~13</td></tr>
-    <tr class="highlight"><td>Zermatt → Blauherd 來回（推薦）</td><td>纜索鐵路+纜車</td><td>CHF ~49</td><td>CHF ~25</td></tr>
-    <tr><td>天氣/體力不確定</td><td>先買單程上山</td><td>CHF ~16</td><td>CHF ~8</td></tr>
+    <tr><th>路段</th><th>全票</th><th>半價卡後</th></tr>
+    <tr class="highlight"><td>Zermatt → Blauherd 來回（推薦）</td><td>CHF ~49</td><td>CHF ~25</td></tr>
+    <tr><td>Zermatt → Sunnegga 來回（只到第一站）</td><td>CHF ~26</td><td>CHF ~13</td></tr>
   </table>
-  <div style="font-size:12px;color:var(--text-muted);margin-top:8px">💡 建議現場購票（谷站 Vispastrasse），天氣多變彈性為主。首班約08:00。</div>
+  <div style="font-size:12px;color:var(--text-muted);margin-top:6px">💡 建議現場購票，彈性為主。首班約08:00。🕐 末班約18:00。</div>
 </div>
-
 <div class="ticket-box">
-  <div class="ticket-box-title">🔴 Gornergrat Bahn 齒軌火車（2026年夏季）</div>
+  <div class="ticket-box-title">🔴 Gornergrat Bahn（2026年夏季）</div>
   <table class="ticket-table">
     <tr><th>路段</th><th>夏季全票</th><th>半價卡後</th><th>備註</th></tr>
     <tr class="highlight"><td>Zermatt ↔ Gornergrat 來回</td><td>CHF 132</td><td>CHF 66</td><td>含 ZOOOM 互動展，各站限進出各一次</td></tr>
-    <tr><td>省錢策略：去 Zermatt→Gornergrat，回 Riffelberg→Zermatt</td><td>~CHF 103</td><td>~CHF 52</td><td>走 Riffelsee 健行段不搭車，可省一段</td></tr>
-    <tr><td>優先登車（可選）</td><td>+CHF 7</td><td>+CHF 7</td><td>提早3分鐘入場選位</td></tr>
+    <tr><td>Priority Boarding（可選）</td><td>+CHF 7</td><td>+CHF 7</td><td>提早3分登車</td></tr>
   </table>
-  <div style="font-size:12px;color:var(--text-muted);margin-top:8px">⚠️ 閘門一入一出規則：每站感應一次，提前規劃路線再購票。首班07:00，每24分一班。</div>
+  <div style="font-size:12px;color:var(--text-muted);margin-top:6px">首班07:00，每24分一班，末班約19:24從Gornergrat下山。</div>
 </div>
-
 <div class="ticket-box">
   <div class="ticket-box-title">🟡 冰川天堂 Matterhorn Glacier Paradise（2026）</div>
   <table class="ticket-table">
     <tr><th>季節</th><th>全票（來回）</th><th>半價卡後</th><th>備註</th></tr>
-    <tr><td>5–6月（肩季，6月適用）</td><td>CHF 183</td><td>CHF 92</td><td>含 Glacier Palace 冰宮</td></tr>
+    <tr class="highlight"><td>5–6月（肩季，6月適用）</td><td>CHF 183</td><td>CHF 92</td><td>含 Glacier Palace 冰宮</td></tr>
     <tr><td>7–8月（旺季）</td><td>CHF 207</td><td>CHF 104</td><td></td></tr>
-    <tr><td>Schwarzsee 中途站來回</td><td>CHF ~50</td><td>CHF ~25</td><td>較輕鬆方案，仍可拍 ZERMATT 地標</td></tr>
-    <tr><td>加選 Crystal Ride 透明底纜車</td><td>+CHF 10起</td><td>—</td><td>選配體驗</td></tr>
   </table>
-  <div style="font-size:12px;color:var(--text-muted);margin-top:8px">⚠️ 末班下山約16:30–17:00，旺季18:30，當天在谷站確認！最晚建議14:00前開始上山。</div>
+  <div style="font-size:12px;color:var(--text-muted);margin-top:6px">⚠️ 末班下山約16:30–17:00，旺季18:30，當天在谷站確認！最晚建議14:00前開始上山。</div>
 </div>
 
-<div class="sec">📊 策馬特 Peak Pass vs 分開購票 划算分析（持半價卡）</div>
-<div class="card" style="padding:0;overflow:hidden">
-  <table class="pass-table">
-    <tr><th>方案</th><th>費用（每人）</th><th>適合情境</th></tr>
-    <tr><td><b>分開購票（半價卡）</b><br>五湖 CHF 25 + Gornergrat CHF 66 + 冰川天堂 CHF 92</td><td><b>CHF 183</b></td><td>各景點各去一次，不重複</td></tr>
-    <tr><td><b>Peak Pass 2天（持半價卡，75折）</b><br>2026年約 CHF 150–170 × 0.75 = 約 CHF 113–128</td><td>約 <b>CHF 113–128</b></td><td>連續2天密集遊，天氣反覆可反覆上山最划算</td></tr>
-    <tr><td><b>Peak Pass 3天（持半價卡）</b><br>約 CHF 180–200 × 0.75 = 約 CHF 135–150</td><td>約 <b>CHF 135–150</b></td><td>D1–D4 全部三天都要玩，或天氣備案多</td></tr>
-    <tr class="winner"><td><b>✅ 本行程建議</b>：分開購票</td><td><b>CHF 183</b></td><td>D2五湖 / D3Gornergrat / D4冰川天堂各一次。除非天氣持續不佳需反覆嘗試，分開購票最靈活。若預計D2/D3可能被雨打斷，Peak Pass 2天可確保一定玩到。</td></tr>
+<div class="sec">🎫 少女峰票價（持半價卡，從 Interlaken Ost 出發）</div>
+<div class="ticket-box">
+  <div class="ticket-box-title">⭐ Jungfraujoch 少女峰（2026年夏季）</div>
+  <table class="ticket-table">
+    <tr><th>方案</th><th>費用</th><th>適合情況</th></tr>
+    <tr class="amber-hl"><td>早安票（Good Morning Ticket）+ 半價卡</td><td>CHF 95</td><td>願意早起（07:04班），避開人潮，省CHF 8</td></tr>
+    <tr class="highlight"><td>一般半價票（普通搭乘）</td><td>CHF ~103</td><td>彈性出發，不限時間下山，輕鬆</td></tr>
+    <tr><td>Swiss Travel Pass（STP）一般搭乘</td><td>CHF ~168（75折）</td><td>STP在少女峰僅25折，比半價卡貴，不推薦</td></tr>
+    <tr><td>持 STP 買早安票</td><td>CHF 95</td><td>STP持有者買早安票也是CHF 95，與半價卡相同</td></tr>
   </table>
+  <div style="font-size:12px;color:var(--text-muted);margin-top:8px">
+    ⚠️ 5–10月強制座位預訂（CHF 10/人），請提前在 <a href="https://www.jungfrau.ch" target="_blank" style="color:var(--sky)">jungfrau.ch</a> 預訂！旺季排隊可達1小時。<br>
+    💡 早安票當天在車站或官網購買即可（不需提前），但天氣不確定時不要提前買。
+  </div>
 </div>
-<div class="alert alert-kiwi">💡 <b>Peak Pass 購買建議</b>：到策馬特後第一天（D1）看天氣預報，若接下來3天天氣都好 → 分開買；若預報有1天以上陰雨 → 買 Peak Pass 2天更彈性（可選好天氣再去，在有效期內任意搭乘）。</div>
 
 <div class="sec">💰 全行程費用試算（每人）</div>
 <div class="card" style="padding:0;overflow:hidden">
   <table class="pass-table">
-    <tr><th>票項</th><th>全票 CHF</th><th>半價卡後</th><th>Swiss Travel Pass 方案</th></tr>
+    <tr><th>票項</th><th>全票 CHF</th><th>半價卡後</th><th>Swiss Travel Pass</th></tr>
     <tr><td>蘇黎世機場 → 策馬特</td><td>~110</td><td>~55</td><td>免費</td></tr>
     <tr><td>策馬特 → 茵特拉肯</td><td>~82</td><td>~41</td><td>免費</td></tr>
     <tr><td>茵特拉肯 → 琉森</td><td>~38</td><td>~19</td><td>免費</td></tr>
@@ -873,45 +849,45 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
     <tr><td>Gornergrat（6月）</td><td>132</td><td>66</td><td>66（50%折）</td></tr>
     <tr><td>冰川天堂（6月肩季）</td><td>183</td><td>92</td><td>92（50%折）</td></tr>
     <tr><td>Sunnegga-Blauherd（五湖）</td><td>~49</td><td>~25</td><td>~25</td></tr>
-    <tr><td>少女峰全程（Interlaken Ost起）</td><td>~235</td><td>~118</td><td>~176（25%折）</td></tr>
-    <tr><td>皮拉圖斯金色環遊（船+齒軌+纜）</td><td>~72</td><td>~36</td><td>船免費+36（50%）</td></tr>
-    <tr><td>布里恩茨湖遊船</td><td>~34</td><td>~17</td><td>免費</td></tr>
-    <tr><td>Harder Kulm 纜車（選配）</td><td>~36</td><td>~18</td><td>免費</td></tr>
-    <tr style="background:var(--gray-light)"><td><b>景點小計</b></td><td><b>~741</b></td><td><b>~372</b></td><td><b>~399</b></td></tr>
-    <tr class="winner"><td><b>✅ 半價卡方案總計</b></td><td></td><td><b>CHF 150 + 372 ≈ 522</b></td><td></td></tr>
-    <tr class="total"><td><b>Swiss Travel Pass（7日）方案</b></td><td></td><td></td><td><b>CHF 418 + 399 ≈ 817</b></td></tr>
+    <tr><td>少女峰（早安票 CHF 95 / 一般 ~103）</td><td>~206</td><td>~95–103</td><td>~168（75折）</td></tr>
+    <tr><td>皮拉圖斯金色環遊</td><td>~72</td><td>~36</td><td>船免費+36</td></tr>
+    <tr><td>布里恩茨湖遊船</td><td>~39</td><td>~20</td><td>免費</td></tr>
+    <tr><td>Harder Kulm 纜車</td><td>~36</td><td>~18</td><td>免費</td></tr>
+    <tr style="background:var(--gray-light)"><td><b>景點小計</b></td><td><b>~717</b></td><td><b>~352–360</b></td><td><b>~387</b></td></tr>
+    <tr class="winner"><td><b>✅ 半價卡方案總計（含CHF 150）</b></td><td></td><td><b>CHF 150 + 356 ≈ 506</b></td><td></td></tr>
+    <tr class="total"><td><b>Swiss Travel Pass（7日）方案</b></td><td></td><td></td><td><b>CHF 418 + 387 ≈ 805</b></td></tr>
   </table>
 </div>
 <div class="card" style="background:var(--kiwi-light);border-left:4px solid var(--kiwi);">
   <div style="font-size:14px;font-weight:700;color:var(--kiwi-dark);margin-bottom:6px">✅ 結論：強烈推薦 Swiss Half Fare Card（CHF 150 / 人）</div>
   <div style="font-size:13px;line-height:1.75;color:var(--kiwi-dark)">
-    比無折扣省約 CHF 369，比 Swiss Travel Pass 省約 CHF 295。本行程非每天密集搭火車，且 Gornergrat / 冰川天堂 / 少女峰 STP 均不免費，半價卡最值。<br><br>
-    💡 <b>購買方式</b>：swissrailways.com 選啟用日期（建議6/17），PDF電子卡手機出示。<b>2026年 CHF 150/人</b>（較2025漲 CHF 30）。
+    比無折扣省約 CHF 361，比 Swiss Travel Pass 省約 CHF 299。本行程山岳纜車均不免費（STP僅5折），半價卡最值。<br>
+    💡 <b>購買</b>：swissrailways.com，選啟用日期（建議6/17），PDF電子卡手機出示。<b>2026年 CHF 150/人</b>。
   </div>
 </div>
 </div>
 
 <!-- ===== TAB 6: 班車驗證 ===== -->
 <div id="tab-trains" class="panel">
-<div class="alert alert-sky">🚂 <b>本表供人工核實用</b>。班次為目前已知時刻，建議出發前在 <b>sbb.ch</b> 或 <b>SBB App</b> 用正確日期再次確認。纜車時刻到各山岳官網核實。</div>
+<div class="alert alert-sky">🚂 <b>本表供人工核實用</b>。出發前請在 <b>sbb.ch</b> 或 <b>SBB App</b> 用正確日期再次確認。纜車時刻至各山岳官網核實。</div>
 
 <div class="train-section">
   <div class="train-sec-title">🛬 D1（6/17）：蘇黎世機場 → 策馬特</div>
   <table class="train-table">
     <tr><th>出發</th><th>抵達</th><th>路線說明</th><th>時間</th><th>備註</th></tr>
-    <tr><td><b>07:46</b> ZH機場</td><td><b>11:20</b> Zermatt</td><td>ZH機場→Visp（IC）→Zermatt（MGB）</td><td>~3h34m</td><td>Visp 轉 Matterhorn Gotthard Bahn，約等8分</td></tr>
+    <tr><td><b>07:46</b> ZH機場</td><td><b>11:20</b> Zermatt</td><td>ZH機場→Visp（IC）→Zermatt（MGB）</td><td>~3h34m</td><td>Visp轉 Matterhorn Gotthard Bahn，約等8分</td></tr>
     <tr><td>09:46</td><td>13:20</td><td>同路線，下一班</td><td>~3h34m</td><td>可選，若機場辦理較慢</td></tr>
   </table>
-  <div style="font-size:12px;color:var(--text-muted);padding:6px 10px;">💡 <a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml" target="_blank" style="color:var(--sky)">sbb.ch 查詢 Zürich Flughafen → Zermatt，日期 2026/06/17</a></div>
+  <div style="font-size:12px;color:var(--text-muted);padding:6px 10px;">💡 <a href="https://www.sbb.ch/en" target="_blank" style="color:var(--sky)">sbb.ch 查詢 Zürich Flughafen → Zermatt，2026/06/17</a></div>
 </div>
 
 <div class="train-section">
-  <div class="train-sec-title">🚂 D2/D3：策馬特山岳纜車時刻（2026年夏季）</div>
+  <div class="train-sec-title">🚡 D2/D3：策馬特山岳纜車時刻</div>
   <table class="train-table">
-    <tr><th>景點</th><th>首班</th><th>末班（上行）</th><th>間隔</th><th>重要備註</th></tr>
+    <tr><th>景點</th><th>首班</th><th>末班（上行）</th><th>間隔</th><th>備註</th></tr>
     <tr><td><b>Gornergrat Bahn</b></td><td>07:00</td><td>18:36（夏季）</td><td>每24分</td><td>末班下山約19:24；坐右邊看馬特洪峰</td></tr>
     <tr><td><b>Sunnegga-Blauherd</b>（五湖）</td><td>08:00–08:30</td><td>~18:00</td><td>連續</td><td>夏季8:00開始，請當天確認</td></tr>
-    <tr><td><b>冰川天堂</b>（谷站發）</td><td>08:30</td><td>⚠️ 14:00前上山</td><td>連續/20分</td><td>末班下山約16:30–17:00，<b>必須當天確認！</b></td></tr>
+    <tr><td><b>冰川天堂</b>（谷站）</td><td>08:30</td><td>⚠️ 14:00前上山</td><td>連續/20分</td><td>末班下山16:30–17:00，<b>當天確認！</b></td></tr>
   </table>
 </div>
 
@@ -919,24 +895,23 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
   <div class="train-sec-title">🚂 D4（6/20）：策馬特 → 茵特拉肯</div>
   <table class="train-table">
     <tr><th>出發</th><th>抵達</th><th>路線</th><th>時間</th><th>備註</th></tr>
-    <tr><td><b>09:00</b> Zermatt</td><td><b>11:15</b> Interlaken Ost</td><td>Zermatt→Visp→Spiez→Interlaken Ost</td><td>~2h15m</td><td>Visp 轉 SBB，Spiez 轉至因特拉肯方向</td></tr>
-    <tr><td>10:00</td><td>12:15</td><td>同路線</td><td>~2h15m</td><td>方案B 冰川天堂後可搭此班</td></tr>
-    <tr><td>13:00</td><td>15:15</td><td>同路線</td><td>~2h15m</td><td>方案B 若冰川天堂結束較晚</td></tr>
+    <tr><td><b>09:00</b> Zermatt</td><td><b>11:15</b> Interlaken Ost</td><td>Zermatt→Visp→Spiez→Interlaken Ost</td><td>~2h15m</td><td>方案A首選班次</td></tr>
+    <tr><td>10:00</td><td>12:15</td><td>同路線</td><td>~2h15m</td><td>方案B冰川天堂後可搭</td></tr>
+    <tr><td>13:00</td><td>15:15</td><td>同路線</td><td>~2h15m</td><td>方案B若冰川天堂結束較晚</td></tr>
   </table>
-  <div style="font-size:12px;color:var(--text-muted);padding:6px 10px;">💡 <a href="https://www.sbb.ch/en" target="_blank" style="color:var(--sky)">sbb.ch 查詢 Zermatt → Interlaken Ost，日期 2026/06/20</a></div>
 </div>
 
 <div class="train-section">
   <div class="train-sec-title">🚂 D5（6/21）：茵特拉肯 ↔ 少女峰</div>
   <table class="train-table">
     <tr><th>路段</th><th>出發</th><th>抵達</th><th>時間</th><th>備註</th></tr>
-    <tr><td>Interlaken Ost → Grindelwald Terminal</td><td>08:03</td><td>08:35</td><td>32分</td><td>BOB 火車，每小時多班</td></tr>
-    <tr><td>Grindelwald Terminal → Eigergletscher</td><td>08:40</td><td>08:55</td><td>15分</td><td>Eiger Express 纜車</td></tr>
-    <tr><td>Eigergletscher → Jungfraujoch</td><td>09:00</td><td>09:26</td><td>26分</td><td>⚠️ 5–10月座位預訂強制 CHF 10</td></tr>
-    <tr><td>Jungfraujoch → Kleine Scheidegg</td><td>11:00（彈性）</td><td>11:26</td><td>26分</td><td></td></tr>
-    <tr><td>Kleine Scheidegg → Interlaken Ost</td><td>12:08（彈性）</td><td>13:35</td><td>1h27m</td><td>經Grindelwald或Wengen均可</td></tr>
+    <tr><td>Interlaken Ost → Grindelwald Terminal</td><td>07:35（早安票）｜08:03（一般）</td><td>08:07 / 08:35</td><td>32分</td><td>早安票須搭07:04或更早從Ost出發</td></tr>
+    <tr><td>Grindelwald Terminal → Eigergletscher</td><td>配合上班</td><td>+15分</td><td>15分</td><td>Eiger Express 纜車</td></tr>
+    <tr><td>Eigergletscher → Jungfraujoch</td><td>配合上班</td><td>+26分</td><td>26分</td><td>⚠️ 5–10月座位預訂強制 CHF 10，jungfrau.ch</td></tr>
+    <tr><td>Jungfraujoch → Kleine Scheidegg（下山）</td><td>11:00–12:00彈性</td><td>+26分</td><td>26分</td><td></td></tr>
+    <tr><td>方案A：Kleine Scheidegg → Interlaken Ost</td><td>12:08彈性</td><td>13:35</td><td>1h27m</td><td>經Grindelwald或Wengen</td></tr>
+    <tr><td>方案B：Kleine Scheidegg → Wengernalp步行（40分）→ Wengen → Lauterbrunnen</td><td>徒步後搭車</td><td>Lauterbrunnen +1h</td><td>步行40分+搭車</td><td>Lauterbrunnen→Interlaken Ost再20分</td></tr>
   </table>
-  <div style="font-size:12px;color:var(--text-muted);padding:6px 10px;">⚠️ <a href="https://www.jungfrau.ch" target="_blank" style="color:var(--sky)">jungfrau.ch 預訂座位</a>，5–10月強制（CHF 10/人），建議出發前2–4週預訂。</div>
 </div>
 
 <div class="train-section">
@@ -946,7 +921,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
     <tr><td><b>11:04</b> Interlaken Ost</td><td><b>12:55</b> Luzern</td><td>美景直達列車</td><td>1h51m</td><td>靠右邊座位！每小時一班</td></tr>
     <tr><td>12:04</td><td>13:55</td><td>下一班</td><td>1h51m</td><td>若上午行程較多</td></tr>
   </table>
-  <div style="font-size:12px;color:var(--text-muted);padding:6px 10px;">💡 無需額外費用或訂位（不像 Glacier Express）。</div>
+  <div style="font-size:12px;color:var(--text-muted);padding:6px 10px;">💡 無需額外費用或訂位。布里恩茨湖→薩爾嫩湖→盧塞恩湖，靠右坐！</div>
 </div>
 
 <div class="train-section">
@@ -955,192 +930,85 @@ body{font-family:'Noto Sans TC',sans-serif;background:#f5f0f0;color:var(--text);
     <tr><th>路段</th><th>出發</th><th>抵達</th><th>時間</th><th>備註</th></tr>
     <tr><td>琉森碼頭 → Alpnachstad（汽船）</td><td>08:35</td><td>10:05</td><td>1h30m</td><td>Swiss Travel Pass 免費！靠右坐</td></tr>
     <tr><td>Alpnachstad → Pilatus Kulm（齒軌）</td><td>10:10</td><td>10:40</td><td>30分</td><td>約40–50分一班，半價卡50%折</td></tr>
-    <tr><td>Pilatus Kulm → Fräkmüntegg → Kriens（纜車）</td><td>12:30（彈性）</td><td>13:15</td><td>45分</td><td>連續纜車，最晚約17:00停止</td></tr>
+    <tr><td>Pilatus Kulm → Fräkmüntegg → Kriens（纜車）</td><td>12:30彈性</td><td>13:15</td><td>45分</td><td>Fräkmüntegg可停 Dragon Ride（CHF 8–12）！</td></tr>
     <tr><td>Kriens → 琉森市區（公車）</td><td>隨到</td><td>+25分</td><td>25分</td><td>搭1號或5號公車</td></tr>
   </table>
-  <div style="font-size:12px;color:var(--text-muted);padding:6px 10px;">⚠️ 齒軌夏季末班上山約17:00。<a href="https://www.pilatus.ch" target="_blank" style="color:var(--sky)">pilatus.ch 確認當天時刻表</a></div>
+  <div style="font-size:12px;color:var(--text-muted);padding:6px 10px;">⚠️ 齒軌夏季末班上山約17:00。<a href="https://www.pilatus.ch" target="_blank" style="color:var(--sky)">pilatus.ch 當天確認時刻表</a></div>
 </div>
 
 <div class="train-section">
   <div class="train-sec-title">🚂 D9（6/25）：琉森 → 蘇黎世 → 機場</div>
   <table class="train-table">
     <tr><th>路段</th><th>出發</th><th>抵達</th><th>時間</th><th>備註</th></tr>
-    <tr><td>琉森 → 蘇黎世 HB</td><td>09:05（或09:35）</td><td>10:05</td><td>~60分</td><td>IC 直達，每小時多班</td></tr>
-    <tr><td>蘇黎世 HB → 機場（S-Bahn）</td><td>17:30</td><td>17:42</td><td>12分</td><td>S16 方向 Flughafen</td></tr>
+    <tr><td>琉森 → 蘇黎世 HB</td><td>09:05（或09:35）</td><td>10:05</td><td>~60分</td><td>IC直達，每小時多班</td></tr>
+    <tr><td>蘇黎世 HB → 機場（S-Bahn）</td><td>17:30</td><td>17:42</td><td>12分</td><td>S16方向 Flughafen</td></tr>
   </table>
-  <div style="font-size:12px;color:var(--text-muted);padding:6px 10px;">⚠️ 22:30 起飛，建議<b>18:00 前抵機場</b>完成 check-in（瑞航一般至起飛前90分截止）</div>
+  <div style="font-size:12px;color:var(--text-muted);padding:6px 10px;">⚠️ 22:30起飛，建議<b>18:00前抵機場</b>完成check-in（瑞航截止約起飛前90分）</div>
 </div>
 
 <div class="train-section">
-  <div class="train-sec-title">⚠️ Lauterbrunnen-Grütschalp 纜車停工 &amp; 替代方案</div>
+  <div class="train-sec-title">⚠️ Lauterbrunnen-Grütschalp 纜車停工說明</div>
   <table class="train-table">
     <tr><th>停工期間</th><th>受影響路線</th><th>替代方案</th><th>備註</th></tr>
-    <tr><td>2026/4/13–7/10</td><td>Lauterbrunnen → Grütschalp</td><td>公車 Lauterbrunnen → Stechelberg（10分）→ LSMS 纜車至 Mürren</td><td>少女峰和瀑布鎮完全不受影響</td></tr>
+    <tr><td>2026/4/13–7/10</td><td>Lauterbrunnen → Grütschalp（前往Mürren）</td><td>公車 Lauterbrunnen → Stechelberg（10分）→ LSMS纜車至Mürren</td><td>少女峰和瀑布鎮施陶/特呂默爾巴赫瀑布完全不受影響</td></tr>
   </table>
-  <div style="font-size:12px;color:var(--text-muted);padding:6px 10px;">✅ 6月行程重點景點（少女峰、瀑布鎮、Grindelwald）均不受影響。</div>
 </div>
 </div>
 
 <!-- ===== TAB 7: 活動推薦 ===== -->
 <div id="tab-activities" class="panel">
+<div class="alert alert-amber">⚡ 瑞士不只是 hike！帶 ⭐⭐⭐ 的強烈推薦，時間允許絕對要玩。</div>
 
-<div class="alert alert-amber">⚡ 瑞士不只是 hike！以下整理適合你行程的趣味活動，帶 ⭐⭐⭐ 的強烈推薦，時間允許絕對要玩。</div>
+<div class="sec">🏔️ Grindelwald First Adventure（茵特拉肯，D5雨天或D6）</div>
+<div class="alert alert-sky">📍 Interlaken Ost → BOB火車至 Grindelwald（30分，STP免費）→ 步行10分到 Firstbahn 纜車站 → 纜車25分上山 | 半價卡50%折，CHF ~30</div>
+<a href="https://twoslowbyron.com/grindelwald-first/" target="_blank" class="blog-link">Grindelwald First 完整攻略</a>
 
-<div class="sec">🏔️ Grindelwald First Adventure（茵特拉肯，D5/D6）</div>
-<div class="alert alert-sky">📍 Grindelwald First（2,168m）｜Interlaken Ost → BOB 火車 → Grindelwald（30分）→ 步行10分到 Firstbahn 纜車站（25分上山）｜半價卡50%折</div>
-
-<div class="act-grid">
-  <div class="act-card">
-    <div class="act-header">
-      <div class="act-emoji">🪂</div>
-      <div class="act-meta">
-        <div class="act-name">⭐⭐⭐ First Cliff Walk by Tissot</div>
-        <div class="act-where">Grindelwald First，2,166m</div>
-        <div class="act-tags">
-          <span class="tag tag-alt">免費（含纜車票）</span>
-          <span class="tag tag-star">約20分</span>
-          <span class="tag tag-cold">高空棧道</span>
-        </div>
-      </div>
-    </div>
-    <div class="act-body">
-      沿岩壁延伸的懸空棧道，玻璃底板，腳下是深谷山景。七個角度看 Eiger、Mönch、Jungfrau 三山，免費必走。<br><br>
-      <b>建議</b>：上山後第一件事先走 Cliff Walk（人少、天氣最清晰），之後再去排 Flyer。
-    </div>
-    <div class="act-rec">⭐ 強烈推薦！免費、短、景觀一流，必走。</div>
-  </div>
-
-  <div class="act-card">
-    <div class="act-header">
-      <div class="act-emoji">💨</div>
-      <div class="act-meta">
-        <div class="act-name">⭐⭐⭐ First Flyer（高速滑索）</div>
-        <div class="act-where">First → Schreckfeld，800m 長</div>
-        <div class="act-tags">
-          <span class="tag tag-warn">CHF 31/人</span>
-          <span class="tag tag-star">約10分</span>
-          <span class="tag tag-cold">最高 84 km/h</span>
-        </div>
-      </div>
-    </div>
-    <div class="act-body">
-      從 First 坐座椅飛衝而下，正面朝向 Eiger 三山，最高時速 84 km/h。全瑞士最具代表性 Zipline。<br><br>
-      <table class="act-table">
-        <tr><th>限制</th><th>條件</th></tr>
-        <tr><td>年齡 / 身高 / 體重</td><td>10歲以上，140cm 以上，最重 120kg</td></tr>
-        <tr><td>費用</td><td>CHF 31/人（含帽和安全帶）</td></tr>
-        <tr><td>操作時間</td><td>11:00–15:30（夏季）</td></tr>
-      </table>
-    </div>
-    <div class="act-rec">⭐ 強烈推薦！<b>早上開放就去排，下午等待可達1–2小時。</b></div>
-  </div>
-
-  <div class="act-card">
-    <div class="act-header">
-      <div class="act-emoji">🏔️</div>
-      <div class="act-meta">
-        <div class="act-name">⭐⭐ Bachalpsee 湖（輕鬆健行）</div>
-        <div class="act-where">First → Bachalpsee 來回，約2小時</div>
-        <div class="act-tags">
-          <span class="tag tag-alt">免費（含纜車票）</span>
-          <span class="tag tag-cold">2,265m</span>
-        </div>
-      </div>
-    </div>
-    <div class="act-body">
-      從 First 約60分鐘抵高山湖泊 Bachalpsee，湖面倒映 Finsteraarhorn、Schreckhorn，路線輕鬆平坦所有人都能走。清晨無風時如鏡。
-    </div>
-    <div class="act-rec">💡 D6 方案B 建議：上午 Cliff Walk + 排 First Flyer，下午健行 Bachalpsee。</div>
-  </div>
+<div class="act-card">
+  <div class="act-header"><div class="act-emoji">🪂</div><div class="act-meta"><div class="act-name">⭐⭐⭐ First Cliff Walk by Tissot</div><div class="act-where">Grindelwald First，2,166m</div><div class="act-tags"><span class="tag tag-alt">免費（含纜車票）</span><span class="tag tag-star">約20分</span></div></div></div>
+  <div class="act-body">沿岩壁延伸的懸空棧道，玻璃底板，腳下是深谷山景，七個角度看 Eiger、Mönch、Jungfrau 三山。上山後第一件事先走，人少天氣最清晰。</div>
+  <div class="act-rec">⭐ 強烈推薦！免費、短、景觀一流，必走。</div>
 </div>
-
-<div class="card" style="margin-bottom:14px">
-  <div style="font-size:13px;line-height:1.85">
-    <b>Grindelwald First 半天最佳組合（D6方案B）：</b><br>
-    Ost → Grindelwald（30分）→ Firstbahn 纜車（25分）→ <b>Cliff Walk</b>（20分，免費）→ <b>First Flyer</b>（排隊+搭，60–90分）→ Bachalpsee 健行（可選，60分來回）→ 纜車下山<br><br>
-    <b>預算估算（每人）</b>：纜車來回 CHF ~30（半價後）+ First Flyer CHF 31 = <b>約 CHF 61/人</b>
-  </div>
+<div class="act-card">
+  <div class="act-header"><div class="act-emoji">💨</div><div class="act-meta"><div class="act-name">⭐⭐⭐ First Flyer（高速滑索）</div><div class="act-where">First → Schreckfeld，800m，最高 84 km/h</div><div class="act-tags"><span class="tag tag-warn">CHF 31/人</span><span class="tag tag-star">約10分</span></div></div></div>
+  <div class="act-body">坐在座椅飛衝而下，正面朝向 Eiger 三山，最高時速 84 km/h。全瑞士最具代表性 Zipline。<br>限制：10歲以上，140cm 以上，最重 120kg。操作時間 11:00–15:30（夏季）。<br><b>⚠️ 早上開放就去排，下午等待可達1–2小時！</b></div>
+  <div class="act-rec">⭐ 強烈推薦！只要10分鐘但感覺超值。</div>
+</div>
+<div class="act-card">
+  <div class="act-header"><div class="act-emoji">🏔️</div><div class="act-meta"><div class="act-name">⭐⭐ Bachalpsee 湖健行</div><div class="act-where">First → Bachalpsee 來回，約2小時</div><div class="act-tags"><span class="tag tag-alt">免費（含纜車票）</span></div></div></div>
+  <div class="act-body">從 First 出發約60分鐘抵高山湖泊 Bachalpsee，湖面倒映 Finsteraarhorn、Schreckhorn，路線輕鬆平坦，清晨無風時如鏡。</div>
+  <div class="act-rec">💡 D6 B方案：Cliff Walk（20分）→ First Flyer（早去排！）→ Bachalpsee 健行（60分）→ 午餐 → 下山。費用合計約 CHF 61/人（半價後）。</div>
 </div>
 
 <div class="sec">🪂 其他推薦活動</div>
-<div class="act-grid">
-  <div class="act-card">
-    <div class="act-header">
-      <div class="act-emoji">🪂</div>
-      <div class="act-meta">
-        <div class="act-name">⭐⭐⭐ 策馬特馬特洪峰滑翔傘</div>
-        <div class="act-where">策馬特，D2 或 D3 下午</div>
-        <div class="act-tags">
-          <span class="tag tag-warn">CHF 180–220/人</span>
-          <span class="tag tag-star">飛行20–25分</span>
-        </div>
-      </div>
-    </div>
-    <div class="act-body">
-      從 Blauherd（2,571m）起飛，雙人滑翔傘與教練，馬特洪峰就在面前！飛行20分鐘俯瞰策馬特山谷。<br><br>
-      主要公司：<b>Matterhorn Paragliding</b>（Bahnhofstrasse 19）、FlyZermatt、FlybYpara<br><br>
-      <table class="act-table">
-        <tr><th>飛行時間</th><th>費用</th></tr>
-        <tr><td>Scenic Flight（20分）</td><td>CHF 180–200</td></tr>
-        <tr><td>VIP Matterhorn Flight（25分）</td><td>CHF 200–230</td></tr>
-        <tr><td>加購影片/照片</td><td>+CHF 40</td></tr>
-      </table>
-    </div>
-    <div class="act-rec">⭐ 強烈推薦！D2 五湖健行下午（約13:00後），或 D3 Gornergrat 下山後下午安排。天氣不好自動取消全額退費。</div>
-  </div>
-
-  <div class="act-card">
-    <div class="act-header">
-      <div class="act-emoji">💦</div>
-      <div class="act-meta">
-        <div class="act-name">⭐⭐ 勞特布魯嫩山谷 + 瀑布群</div>
-        <div class="act-where">茵特拉肯，D6 A方案</div>
-        <div class="act-tags">
-          <span class="tag tag-alt">施陶瀑布免費</span>
-          <span class="tag tag-warn">特呂默爾巴赫 CHF 16</span>
-        </div>
-      </div>
-    </div>
-    <div class="act-body">
-      勞特布魯嫩 U 型冰河谷，72道瀑布傾瀉。施陶河瀑布（300m 落差，免費）+ 特呂默爾巴赫瀑布（地下洞穴，電梯進入，CHF 16）。<br>
-      從因特拉肯 Ost 搭火車到 Lauterbrunnen 20分。
-    </div>
-    <div class="act-rec">💡 D6 A方案搭配，特呂默爾巴赫洞穴水聲震撼，值得 CHF 16！</div>
-  </div>
-
-  <div class="act-card">
-    <div class="act-header">
-      <div class="act-emoji">🐉</div>
-      <div class="act-meta">
-        <div class="act-name">⭐⭐ 皮拉圖斯 Dragon Ride 夏季滑道</div>
-        <div class="act-where">琉森皮拉圖斯，D8 下山途中</div>
-        <div class="act-tags">
-          <span class="tag tag-warn">CHF 8–12/人</span>
-          <span class="tag tag-star">約5分鐘</span>
-        </div>
-      </div>
-    </div>
-    <div class="act-body">
-      Fräkmüntegg 中途站的夏季滑道（Alpine Coaster），約1km，自行控速，俯瞰琉森湖視野絕佳。<br>
-      金色環遊下山時在此停留約15–20分鐘，費用不高，很好玩！
-    </div>
-    <div class="act-rec">💡 金色環遊中途順道玩，強烈建議！</div>
-  </div>
+<div class="act-card">
+  <div class="act-header"><div class="act-emoji">🪂</div><div class="act-meta"><div class="act-name">⭐⭐⭐ 策馬特馬特洪峰滑翔傘</div><div class="act-where">策馬特，D2 或 D3 下午（14:00–17:00）</div><div class="act-tags"><span class="tag tag-warn">CHF 180–220/人</span><span class="tag tag-star">飛行20–25分</span></div></div></div>
+  <div class="act-body">從 Blauherd（2,571m）起飛，雙人滑翔傘與教練一起，馬特洪峰就在眼前！<br>主要公司：<b>Matterhorn Paragliding</b>（Bahnhofstrasse 19，Glacier Sport Shop 地下）、FlyZermatt。天氣不好自動取消全額退費。+CHF 40 加購 GoPro 影片。</div>
+  <div class="act-rec">⭐ 強烈推薦！D2五湖健行或D3Gornergrat後下午安排，人生難忘體驗。</div>
+</div>
+<div class="act-card">
+  <div class="act-header"><div class="act-emoji">💦</div><div class="act-meta"><div class="act-name">⭐⭐ 勞特布魯嫩瀑布群</div><div class="act-where">茵特拉肯，D5方案B 下山順遊</div><div class="act-tags"><span class="tag tag-alt">施陶瀑布免費</span><span class="tag tag-warn">特呂默爾巴赫 CHF 16</span></div></div></div>
+  <div class="act-body">勞特布魯嫩 U型冰河谷，72道瀑布傾瀉。<br>• <b>Staubbachfall 施陶瀑布</b>（免費，300m落差）<br>• <b>Trümmelbach Falls 特呂默爾巴赫</b>（CHF 16，地下洞穴，電梯進入，水聲震撼！）<br>從 Interlaken Ost 搭火車至 Lauterbrunnen 約20分。</div>
+  <div class="act-rec">💡 D5方案B 下山路線自然包含此景，或D6 A方案搭配聖貝亞圖斯洞穴那天。</div>
+</div>
+<div class="act-card">
+  <div class="act-header"><div class="act-emoji">🐉</div><div class="act-meta"><div class="act-name">⭐⭐ 皮拉圖斯 Dragon Ride 夏季滑道</div><div class="act-where">琉森皮拉圖斯，D8 下山途中</div><div class="act-tags"><span class="tag tag-warn">CHF 8–12/人</span><span class="tag tag-star">約5分鐘</span></div></div></div>
+  <div class="act-body">Fräkmüntegg 中途站的夏季滑道（Alpine Coaster），約1km，自行控速，俯瞰琉森湖，CP值很高！金色環遊下山時順道停留約15–20分鐘。</div>
+  <div class="act-rec">💡 D8 金色環遊中途站順道玩，強烈建議！</div>
 </div>
 
-<div class="sec">📊 活動整合進行程建議</div>
+<div class="sec">📊 活動整合建議</div>
 <div class="card" style="padding:0;overflow:hidden">
   <table class="pass-table">
     <tr><th>天</th><th>建議活動</th><th>費用估算</th><th>插入時機</th></tr>
     <tr><td><b>D2 或 D3</b></td><td>⭐⭐⭐ 馬特洪峰滑翔傘</td><td>CHF 180–220/人</td><td>下午健行/Gornergrat後（約14:00–17:00）</td></tr>
-    <tr><td><b>D6</b></td><td>⭐⭐⭐ First Cliff Walk + First Flyer</td><td>CHF 61/人（半價後）</td><td>D6 B方案，Grindelwald First 全天</td></tr>
-    <tr><td><b>D6</b></td><td>⭐⭐ 特呂默爾巴赫洞穴瀑布</td><td>CHF 16/人</td><td>D6 A方案下午搭配</td></tr>
+    <tr><td><b>D5（雨天）或 D6</b></td><td>⭐⭐⭐ Grindelwald First Cliff Walk + First Flyer</td><td>CHF 61/人（半價後）</td><td>D5雨天備案，或D6 B方案</td></tr>
+    <tr><td><b>D5 方案B</b></td><td>⭐⭐ 特呂默爾巴赫洞穴瀑布</td><td>CHF 16/人</td><td>少女峰下山路線自然包含</td></tr>
+    <tr><td><b>D6 方案A</b></td><td>⭐⭐ 哈德昆觀景台 + 聖貝亞圖斯洞穴</td><td>纜車CHF ~18 + 洞穴CHF 26</td><td>布里恩茨遊船後的下午</td></tr>
     <tr><td><b>D8</b></td><td>⭐⭐ Dragon Ride 夏季滑道</td><td>CHF 8–12/人</td><td>金色環遊 Fräkmüntegg 停留時順道</td></tr>
   </table>
 </div>
 </div>
 
-<!-- Lightbox script -->
 <script>
 function showTab(id,btn){
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});
@@ -1150,13 +1018,15 @@ function showTab(id,btn){
   window.scrollTo({top:0,behavior:'smooth'})
 }
 function openLightbox(src,caption){
-  document.getElementById('lb-img').src=src;
-  document.getElementById('lb-caption').textContent=caption||'';
-  document.getElementById('lightbox').classList.add('active');
+  var overlay=document.getElementById('img-overlay');
+  var img=document.getElementById('overlay-img');
+  img.src=src;
+  img.alt=caption||'';
+  overlay.classList.add('open');
   document.body.style.overflow='hidden';
 }
 function closeLightbox(){
-  document.getElementById('lightbox').classList.remove('active');
+  document.getElementById('img-overlay').classList.remove('open');
   document.body.style.overflow='';
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLightbox()});
