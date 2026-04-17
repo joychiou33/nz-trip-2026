@@ -1,1 +1,186 @@
 
+switzerland-2026-v6.html (程式請見附檔)需要微調的地方:
+
+a.「航班住宿」幫我補上住宿資訊
+
+-Hotel Bahnhof Zermatt 
+
+D2-4(6/17.18.19三晚)
+
+標籤:「雙人房」、「共用廚房.衛浴」
+
+map:https://maps.app.goo.gl/YJrqZDxjuaBwb9Fc6
+
+開箱:https://yinfen.pixnet.net/blog/posts/4045431945
+
+幫我再確認金額: CHF436.5 = TWD 18,755
+
+-Villa Sonnenhof 
+
+D2-4(6/20.21.22三晚)
+
+標籤:「小雙人房」、「 共用廚房」
+
+標籤:✅ 全程最舒適 ->改成 「免費巴士洗衣咖啡」、「火車站步行15分」
+
+map:https://maps.app.goo.gl/25RiKhCrHzWg4v3B7
+
+幫我再確認金額: CHF474=TWD ?(幫我換算)
+
+-Hotel Alpha, Garni
+
+D2-4(6/23.6/24兩晚)
+
+標籤:「雙床房」、「共用衛浴」
+
+map:https://maps.app.goo.gl/HcZuUjCnSbpZDJjM6
+
+開箱:https://boleroearth.blogspot.com/2011/10/2-1hotel-alpha.html
+
+幫我再確認金額: CHF292.4 =TWD 11,168
+
+b.網頁標題
+
+「2026年6月16日(二)- 6月26日(五)|策馬特 × 茵特拉肯 × 琉森 × 蘇黎世」
+
+其中「|策馬特 × 茵特拉肯 × 琉森 × 蘇黎世」在手機閱讀時被強制換行改一下排版
+
+c.「每日時程」有些該天的微調,像是a.b方案看起來太複雜,或是有些備案一直重複出現,想簡化一些。同時也有做了每日共同性的調整,請再幫我檢查"每一天"是否遵循。
+
+D1 6/17
+
+🛬 蘇黎世機場 → 策馬特(抵達日)
+
+「06:10 抵蘇黎世 → 機場 Coop 補食物 → 07:46 搭火車(Visp 轉車)→ 11:20 抵策馬特 → 飯店寄放行李 → 輕鬆老城漫步 → 晚餐 Old Zermatt 起司鍋 → 早睡。」
+
+->簡短敘述ok,但跟下方真正的時間線不要重複資訊,這邊可以摘要一下每個動作,不帶時間。(共同性)
+
+「⚠️ 飛行15h+,今天輕鬆為主!」、「🏨 Hotel Bahnhof Zermatt(火車站對面,Gornergrat站斜對面)」
+
+->標籤數量控制或排版改善,主因是在手機會換行排版變長。
+
+->超連結的標籤,請改成像D5這樣的區塊「💡 少女峰→Kleine Scheidegg→Lauterbrunnen路線參考遊記」且放在當天的最下面,做參考就好,不要在方在標籤列 (共同性)
+
+06:10
+
+抵蘇黎世機場 → 領行李 → 機場地下層 Coop → 往地下火車站
+
+...
+
+「14:00 飯店 check-in → 休息調時差」
+
+補上 : → 詢問&安排 馬特洪峰滑翔傘、還有下面想做的城鎮觀光,請精簡梳理呈現。
+
+「班霍夫大街 策馬特博物館 老城區蘑菇屋 策馬特湯匙 瑞士牛鈴 馬特洪峰玻璃杯
+
+馬特洪峰日出 黑面羊 土撥鼠噴水池 土撥鼠油」
+
+灰色小字:Matterhorn Paragliding(Bahnhofstrasse 19,Glacier Sport Shop 地下),開放至19:00。CHF 180–220/人。
+
+D2 6/18 幫我補上下午14:00後的規劃,請依照你的風格和我上述的修改方向,精簡明確呈現:
+
+「爬完山後,可回旅館稍作休息,肚子餓的話就去覓食,街上逛逛
+
+或是看一下 馬特洪峰滑翔傘 怎麼報名
+
+時間夠的話,可以去逛雨備專案的景點 例如博物館等等
+
+下午4點策馬特車站前會有表演
+
+晚餐可以吃黑面羊 或是超市買東西回家煮」
+
+最下面就簡化,呈現標題
+
+⚡ D2 活動機會:馬特洪峰滑翔傘
+
+🌧️ D2 雨天備案:馬特洪峰冰川天堂(見D4備案說明)
+
+D3 6/19
+
+「10:15 Riffelberg(2,582m)休息 & 午餐」後面直接把方案b 接續寫 約11:00從 Riffelberg 搭纜車至 Furi...(這天變成沒有a.b方案:就是打算排冰川天堂)
+
+D4 6/20
+
+這天變成沒有a.b方案,主要行程取原a方案內容呈現。
+
+原a行程請再加上市區巡禮相關安排,請梳理後精簡明確呈現「阿勒河畔 River Aare、哈德昆觀景台 Harder Kulm、日本友好的庭 Japanischer Garten Interlaken、茵特拉根教堂 Röm.-kath. Kirchgemeinde、茵特拉根城堡 Interlaken Castle、Höhematte 公園、Hoheweg 大道逛街」
+
+修正為「備案 : 冰川天堂 → 再移動」,取原本b方案內容。
+
+修正為「⚠️冰川天堂末班下山纜車約16:30–17:00,旺季18:30。3,883m是全程最高點,有嚴重頭痛噁心立即下山。🔗 冰川天堂即時纜車狀態」
+
+->纜車等交通工具"營業時間",請務必附上官網連結讓我可即時查詢,如果你能爬到資訊確認,也補上文字敘述,供我參考。(共同性)
+
+D5 6/21
+
+這天變成沒有a.b方案,主要行程取原b方案內容呈現。
+
+「12:00 搭 Jungfrau Railway 下山至 Kleine Scheidegg小夏戴克..(續寫)」
+
+修正為備案:「因特拉肯」..a方案續寫
+
+「⚠️ 重要提醒:少女峰登山列車 5–10月強制座位預訂...」
+
+-> 這資訊很重要但不需要放這裡了,放首頁「行程評估」改成「行前確認」
+
+「🌧️ D5 雨天備案:Grindelwald First Adventure 」
+
+->似乎不切實際,下雨怎麼玩活動? 但有效資訊可以整到「活動推薦」tab
+
+這篇有更清楚的介紹,尤其是Trottibike幫我摘要一下整合進來「活動推薦」tab
+
+https://twoslowbyron.com/grindelwald-first/
+
+這篇 https://dragonflytravelblog.com/switzerland-grindelwald/
+
+路線二:觀景路線,有計畫性節費買票和行程幫我整合進去
+
+「先坐纜車到Grindelwald First,在懸崖步道觀景後,便可開始Bachalpsee健行。到達Bort再換乘Trottibike下山,剩下時間在小鎮逛逛。這樣只需要一張單程纜車票和Trottibike費用,總共55法郎,算是瑞士比較便宜的活動消費。」
+
+上面連結都記得留下來備查。
+
+D6 6/22
+
+這天變成沒有a.b方案:就是打算 布里恩茨湖遊船 + 哈德昆 + 洞穴,時間幫我推估一下
+
+哈德昆 Harder Kulm 可參考這篇: https://twoslowbyron.com/harder-kulm/
+
+看還有沒有要補充,連結記得附上。
+
+另原有的方案B請reschedule移置6/23執行。
+
+D7 6/23
+
+這天變動比較大,請重新規劃分析合理安排。
+
+早上改成Grindelwald First Adventure後再移動琉森,做城區散步。
+
+「09:00 Japanischer Garten 日本庭園(免費,步行可達)」
+
+->這應該在 6/20 抵達茵特拉肯就做了,且這天搭車去琉森,要走去west站,好像也不順路,拿掉。
+
+補上琉森城區散步:「琉森火車站  → 卡貝爾橋Kapellbruke  → 聖萊奧德伽爾教堂Hofkirche St. Leodegar  → 垂死獅子像Löwendenkmal → 古城區廣場 → 穆塞格城牆Museggmauer」,請梳理後精簡明確呈現。
+
+琉森市區可參考這篇: https://twoslowbyron.com/luzern_attraction/,連結記得附上。
+
+D8  6/24 皮拉圖斯山金色環遊
+
+目前是依順時鐘規劃https://suhowtravel.com/pilatus-golden-round-trip/
+
+另可參考這幾篇,看看有無要補充or注意的: https://twoslowbyron.com/pilatus/、https://shiningchan.com/blog/post/pilatus-travel-introduction/、https://ayumii.com/golden-roundtrip-travelplan/,連結記得附上。
+
+D9 6/25 🍫 Lindt + 市區 + 離境
+
+加入網友分享的規劃，請參考這篇https://jamesdiscover.tw/blog/321032，一天內看完精華景點，又不至於太趕建議:「必須保留的三個點是：林登霍夫山（全景）、老城區（至少穿過一條小巷，感受氣氛）、蘇黎世湖邊（Bürkliplatz一帶）。把這三個點在地圖上連起來，就是一個緊湊的三角形。放棄入內參觀所有需要門票的博物館，用眼睛和腳步去感受城市。」請依照你的風格和我上述的修改方向,精簡明確呈現。
+
+可參考這幾篇: https://twoslowbyron.com/lindt_chocolate/、https://www.wendyjourney.com/zurich/，連結記得附上。
+
+
+
+d.路線圖
+
+1.「策馬特城鎮完整導覽」
+
+>超連結的標籤,請改成像D5這樣的區塊「💡 少女峰→Kleine Scheidegg→Lauterbrunnen路線參考遊記」且放在當天的最下面,做參考就好,不要在方在標籤列(共同性)
+
+2.把「D2-D5策馬特」「D5-D7茵特拉肯」「D7-D8琉森」當地活動會使用到的所有纜車&交通資訊EX官網連結和營業時間整理供出來
